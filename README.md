@@ -1,4 +1,4 @@
-# Starter kit for a Terraform GitOps module
+# MAS - Manage Module - Under development
 
 This is a Starter kit to help with the creation of Terraform modules. The basic structure of a Terraform module is fairly
 simple and consists of the following basic values:
