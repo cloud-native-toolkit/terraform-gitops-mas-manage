@@ -1,0 +1,38 @@
+apiVersion: apps.mas.ibm.com/v1
+kind: ManageWorkspace
+metadata:
+  namespace: mas-mas8-manage
+  name: ibm-mas-manage-mas8-mas8-demo
+  labels:
+    app.kubernetes.io/instance: ibm-mas-manage
+    app.kubernetes.io/managed-by: olm
+    app.kubernetes.io/name: ibm-mas-manage
+    mas.ibm.com/applicationId: manage
+    mas.ibm.com/instanceId: mas8
+    mas.ibm.com/workspaceId: mas8-demo
+spec:
+  bindings:
+    jdbc: workspace-application
+    mso: workspace
+  components:
+    base:
+      version: latest
+  settings:
+    deployment:
+      persistentVolumes: []
+      mode: up
+      importedCerts: []
+      buildTag: latest
+      serverTimezone: GMT
+    languages:
+      baseLang: EN
+    db:
+      dbSchema: maximo
+      encryptionSecret: masdev-manage-encryptionsecret
+      maxinst:
+        bypassUpgradeVersionCheck: false
+        db2Vargraphic: true
+        demodata: true
+        indexSpace: MAXINDEX
+        tableSpace: MAXDATA
+

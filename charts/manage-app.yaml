@@ -1,0 +1,12 @@
+apiVersion: apps.mas.ibm.com/v1
+kind: ManageApp
+metadata:
+  name: mas8
+  generation: 1
+  namespace: mas-mas8-manage
+  finalizers:
+    - manageapp.apps.mas.ibm.com/finalizer
+  labels:
+    mas.ibm.com/applicationId: manage
+    mas.ibm.com/instanceId: mas8
+spec: {}

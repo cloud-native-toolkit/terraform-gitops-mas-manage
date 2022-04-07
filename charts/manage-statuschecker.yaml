@@ -1,0 +1,7 @@
+apiVersion: apps.mas.ibm.com/v1
+kind: ManageStatusChecker
+metadata:
+  name: appstatuschecker
+  namespace: mas-mas8-manage
+spec:
+  resourceKind: ManageApp

@@ -63,11 +63,6 @@ variable "git_credentials" {
   sensitive   = true
 }
 
-variable "namespace" {
-  type        = string
-  description = "The namespace where the application should be deployed"
-}
-
 variable "kubeseal_cert" {
   type        = string
   description = "The certificate/public key used to encrypt the sealed secrets"
@@ -79,3 +74,14 @@ variable "server_name" {
   description = "The name of the server"
   default     = "default"
 }
+
+variable "instanceid" {
+  type        = string
+  description = "instance name for MAS - for example: masdemo or mas8 "
+}
+
+variable "entitlement_key" {
+  type        = string
+  description = "IBM entitlement key for MAS"
+}
+

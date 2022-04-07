@@ -1,14 +1,13 @@
 locals {
-  name          = "my-module"
+  name          = "mas-manage"
   bin_dir       = module.setup_clis.bin_dir
   yaml_dir      = "${path.cwd}/.tmp/${local.name}/chart/${local.name}"
-  service_url   = "http://${local.name}.${var.namespace}"
-  values_content = {
-  }
+  inst_dir      = "${local.yaml_dir}/instance"
+
   layer = "services"
   type  = "base"
   application_branch = "main"
-  namespace = var.namespace
+  namespace = "mas-${var.instanceid}-manage"
   layer_config = var.gitops_config[local.layer]
 }
 
@@ -26,12 +25,54 @@ resource null_resource create_yaml {
   }
 }
 
-resource null_resource setup_gitops {
-  depends_on = [null_resource.create_yaml]
+# create namespace for manage
+module manageNamespace {
+  source = "github.com/cloud-native-toolkit/terraform-gitops-namespace.git"
+
+  gitops_config = var.gitops_config
+  git_credentials = var.git_credentials
+  name = "${local.namespace}"
+  create_operator_group = true
+}
+
+# add entitlement secret
+module "pullsecret" {
+  depends_on = [module.manageNamespace]
+
+  source = "github.com/cloud-native-toolkit/terraform-gitops-pull-secret.git"
+
+  gitops_config = var.gitops_config
+  git_credentials = var.git_credentials
+  server_name = var.server_name
+  kubeseal_cert = var.kubeseal_cert
+  
+  namespace = module.masNamespace.name
+  docker_server = "cp.icr.io"
+  docker_username = "cp"
+  docker_password = var.entitlement_key
+  secret_name = "ibm-entitlement"
+}
+
+# Install IBM Maximo Application Suite - Manage operator
+resource "null_resource" "deployMANop" {
+  depends_on = [module.pullsecret]
+
+  provisioner "local-exec" {
+    command = "${path.module}/scripts/deployMANop.sh '${local.yaml_dir}' '${local.namespace}'"
+
+    environment = {
+      BIN_DIR = local.bin_dir
+    }
+  }
+}
+
+# Deploy MAS-Manage operator
+resource null_resource setup_gitops_op {
+  depends_on = [null_resource.deployMANop]
 
   triggers = {
     name = local.name
-    namespace = var.namespace
+    namespace = local.namespace
     yaml_dir = local.yaml_dir
     server_name = var.server_name
     layer = local.layer
@@ -59,4 +100,4 @@ resource null_resource setup_gitops {
       GITOPS_CONFIG   = self.triggers.gitops_config
     }
   }
-}
+} 
