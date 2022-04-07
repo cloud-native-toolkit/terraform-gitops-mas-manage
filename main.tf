@@ -18,15 +18,6 @@ module setup_clis {
   source = "github.com/cloud-native-toolkit/terraform-util-clis.git"
 }
 
-resource null_resource create_yaml {
-  provisioner "local-exec" {
-    command = "${path.module}/scripts/create-yaml.sh '${local.name}' '${local.yaml_dir}'"
-
-    environment = {
-      VALUES_CONTENT = yamlencode(local.values_content)
-    }
-  }
-}
 
 # create namespace for manage
 module manageNamespace {
