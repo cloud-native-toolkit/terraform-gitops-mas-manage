@@ -9,6 +9,9 @@ locals {
   application_branch = "main"
   namespace = "mas-${var.instanceid}-manage"
   layer_config = var.gitops_config[local.layer]
+
+  values_content = {
+  }
 }
 
 module setup_clis {
@@ -46,7 +49,7 @@ module "pullsecret" {
   server_name = var.server_name
   kubeseal_cert = var.kubeseal_cert
   
-  namespace = module.masNamespace.name
+  namespace = module.manageNamespace.name
   docker_server = "cp.icr.io"
   docker_username = "cp"
   docker_password = var.entitlement_key
