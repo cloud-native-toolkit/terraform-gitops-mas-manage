@@ -6,6 +6,8 @@ metadata:
   name: ibm-mas-manage
   namespace: mas-mas8-manage
 spec:
+  channel: 8.x
+  installPlanApproval: Automatic
   name: ibm-mas-manage
   source: ibm-operator-catalog
   sourceNamespace: openshift-marketplace
