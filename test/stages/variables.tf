@@ -59,7 +59,7 @@ variable "git_org" {
 }
 
 variable "git_repo" {
-  default = "git-module-mas-manage"
+  default = "git-module-mas-app"
 }
 
 variable "gitops_namespace" {

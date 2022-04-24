@@ -1,0 +1,10 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: {{ .Values.subscriptions.massapp.name }}
+spec:
+  name: {{ .Values.subscriptions.massapp.name }}
+  source: ibm-operator-catalog
+  sourceNamespace: openshift-marketplace
+  channel: {{ .Values.subscriptions.massapp.subscription.channel }}
+  installPlanApproval: {{ .Values.subscriptions.massapp.subscription.installPlanApproval }}

@@ -1,6 +1,6 @@
-name: gitops-mas-manage
+name: gitops-mas-app
 type: gitops
-description: Module to populate a gitops repo with the resources to provision Maximo-Manage
+description: Module to populate a gitops repo with the resources to provision Maximo-Applications
 tags:
   - tools
   - gitops

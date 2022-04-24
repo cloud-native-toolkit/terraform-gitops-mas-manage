@@ -85,3 +85,20 @@ variable "entitlement_key" {
   description = "IBM entitlement key for MAS"
 }
 
+variable "appid" {
+  type        = string
+  description = "MAS AppID to deploy.  Expects: manage"
+}
+
+variable "channel" {
+  type        = string
+  description = "Subscription channel"
+  default     = "8.x"
+}
+
+variable "installPlan" {
+  type        = string
+  description = "Install Plan for App"
+  default     = "Automatic"
+}
+

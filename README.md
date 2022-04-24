@@ -1,7 +1,7 @@
-#  Maximo Application Suite - Manage Application Gitops terraform module
+#  Maximo Application Suite - MAS Application Gitops terraform module
 ![Verify and release module](https://github.com/cloud-native-toolkit/terraform-gitops-mas-manage/workflows/Verify%20and%20release%20module/badge.svg)
 
-Deploys the Manage application as part of Maximo Application Suite via gitops.  To run, download the BOM (Bill of Materials) from the module catalog and build the terraform from there.  Specify the MAS-Core instance id - in the `instanceid` variable.  This will create a namespace of the name "mas-(instanceid)-manage".
+Deploys the MAS applications as part of Maximo Application Suite via gitops.  To run, download the BOM (Bill of Materials) from the module catalog and build the terraform from there.  Specify the MAS-Core instance id - in the `instanceid` variable.  This will create a namespace of the name "mas-(instanceid)-(appid)".
 
 Note if your cluster is not setup for gitops, download the gitops bootstrap BOM from the module catalog first to setup the gitops tooling.
 
@@ -36,6 +36,7 @@ module "mas_manage" {
   kubeseal_cert = module.gitops.sealed_secrets_cert
   entitlement_key = module.catalog.entitlement_key
   instanceid = "mas8"
+  appid = "manage"
 
 }
 ```
