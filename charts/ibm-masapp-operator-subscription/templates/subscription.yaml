@@ -4,7 +4,7 @@ metadata:
   name: {{ .Values.subscriptions.massapp.name }}
 spec:
   name: {{ .Values.subscriptions.massapp.name }}
-  source: ibm-operator-catalog
-  sourceNamespace: openshift-marketplace
+  source: {{ .Values.subscriptions.massapp.subscription.source }}
+  sourceNamespace: {{ .Values.subscriptions.massapp.subscription.sourceNamespace }}
   channel: {{ .Values.subscriptions.massapp.subscription.channel }}
   installPlanApproval: {{ .Values.subscriptions.massapp.subscription.installPlanApproval }}
