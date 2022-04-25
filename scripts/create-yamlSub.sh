@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-#SCRIPT_DIR=$(cd $(dirname "$0"); pwd -P)
-MODULE_DIR=$(cd "${SCRIPT_DIR}/.."; pwd -P)
-CHART_DIR=$(cd "${MODULE_DIR}/charts/ibm-masapp-operator-subscription"; pwd -P)
-
-NAME="$1"
+CHARTNAME="$1"
 DEST_DIR="$2"
 VALUES_FILE="$3"
+
+SCRIPT_DIR=$(cd $(dirname "$0"); pwd -P)
+MODULE_DIR=$(cd "${SCRIPT_DIR}/.."; pwd -P)
+CHART_DIR=$(cd "${MODULE_DIR}/charts/${CHARTNAME}"; pwd -P)
 
 #if [[ -z "${TMP_DIR}" ]]; then
 #  TMP_DIR="./.tmp"

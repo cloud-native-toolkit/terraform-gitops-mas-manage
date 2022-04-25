@@ -4,19 +4,19 @@ locals {
   yaml_dir      = "${path.cwd}/.tmp/${local.name}/chart/${local.name}"
   inst_dir      = "${local.yaml_dir}/instance"
   
-  chart_nameSub     ="ibm-masapp-operator-subscription"
-  chart_nameInst    ="ibm-masapp-operator-instance"
+  chart_nameSub     = "ibm-masapp-operator-subscription"
+  chart_nameInst    = "ibm-masapp-operator-instance"
   yaml_dirSub       = "${path.cwd}/.tmp/${local.name}/chart/${local.chart_nameSub}/"
   yaml_dirInst      = "${path.cwd}/.tmp/${local.name}/chart/${local.chart_nameInst}/"
 
-  layer = "services"
-  type  = "base"
+  layer              = "services"
+  type               = "base"
   application_branch = "main"
-  appname = "ibm-mas-${var.appid}"
-  namespace = "mas-${var.instanceid}-${var.appid}"
-  layer_config = var.gitops_config[local.layer]
-  values_file = "values.yaml"
-  installPlan = var.installPlan
+  appname            = "ibm-mas-${var.appid}"
+  namespace          = "mas-${var.instanceid}-${var.appid}"
+  layer_config       = var.gitops_config[local.layer]
+  values_file        = "values.yaml"
+  installPlan        = var.installPlan
 
   values_content = {
     subscriptions = {
