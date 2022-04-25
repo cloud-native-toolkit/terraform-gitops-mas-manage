@@ -68,7 +68,7 @@ module "pullsecret" {
   secret_name = "ibm-entitlement"
 }
 
-# Install MAS App operator
+# Add values for MAS App operator
 resource "null_resource" "deployMASsub" {
   depends_on = [module.pullsecret]
 
@@ -81,11 +81,14 @@ resource "null_resource" "deployMASsub" {
   }
 }
 
+# Add values for MAS App instance
+
+
 # Deploy MAS App operator
 resource gitops_module subscription {
   depends_on = [null_resource.deployMASsub]
 
-  name        = local.chart_nameSub
+  name        = local.name
   namespace   = local.namespace
   content_dir = local.yaml_dirSub
   server_name = var.server_name
@@ -96,41 +99,3 @@ resource gitops_module subscription {
   credentials = yamlencode(var.git_credentials)
 }
 
-
-
-/*
-# Deploy MAS-Manage operator
-resource null_resource setup_gitops_op {
-  depends_on = [null_resource.deployMANop]
-
-  triggers = {
-    name = local.name
-    namespace = local.namespace
-    yaml_dir = local.yaml_dir
-    server_name = var.server_name
-    layer = local.layer
-    type = local.type
-    git_credentials = yamlencode(var.git_credentials)
-    gitops_config   = yamlencode(var.gitops_config)
-    bin_dir = local.bin_dir
-  }
-
-  provisioner "local-exec" {
-    command = "${self.triggers.bin_dir}/igc gitops-module '${self.triggers.name}' -n '${self.triggers.namespace}' --contentDir '${self.triggers.yaml_dir}' --serverName '${self.triggers.server_name}' -l '${self.triggers.layer}' --type '${self.triggers.type}'"
-
-    environment = {
-      GIT_CREDENTIALS = nonsensitive(self.triggers.git_credentials)
-      GITOPS_CONFIG   = self.triggers.gitops_config
-    }
-  }
-
-  provisioner "local-exec" {
-    when = destroy
-    command = "${self.triggers.bin_dir}/igc gitops-module '${self.triggers.name}' -n '${self.triggers.namespace}' --delete --contentDir '${self.triggers.yaml_dir}' --serverName '${self.triggers.server_name}' -l '${self.triggers.layer}' --type '${self.triggers.type}'"
-
-    environment = {
-      GIT_CREDENTIALS = nonsensitive(self.triggers.git_credentials)
-      GITOPS_CONFIG   = self.triggers.gitops_config
-    }
-  }
-} */
