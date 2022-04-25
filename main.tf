@@ -10,7 +10,7 @@ locals {
   yaml_dirInst      = "${path.cwd}/.tmp/${local.name}/chart/${local.chart_nameInst}/"
 
   layer              = "services"
-  type               = "base"
+  type               = "operators"
   application_branch = "main"
   appname            = "ibm-mas-${var.appid}"
   namespace          = "mas-${var.instanceid}-${var.appid}"
