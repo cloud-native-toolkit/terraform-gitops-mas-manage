@@ -1,6 +1,6 @@
 locals {
   name          = "mas-appdeploy"
-  bin_dir       = module.setup_clis.bin_dir
+ // bin_dir       = module.setup_clis.bin_dir
   yaml_dir      = "${path.cwd}/.tmp/${local.name}/chart/${local.name}"
   inst_dir      = "${local.yaml_dir}/instance"
   
@@ -35,9 +35,9 @@ locals {
 }
 
 
-module setup_clis {
+/*module setup_clis {
   source = "github.com/cloud-native-toolkit/terraform-util-clis.git"
-}
+}*/
 
 
 # create namespace for mas application
