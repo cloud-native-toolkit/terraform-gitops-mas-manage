@@ -77,7 +77,6 @@ resource "null_resource" "deployMASsub" {
 
     environment = {
       VALUES_CONTENT = yamlencode(local.values_content)
-      BIN_DIR = local.bin_dir
     }
   }
 }
