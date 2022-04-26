@@ -94,7 +94,7 @@ resource "null_resource" "deployMASsub" {
 
 # Add values for MAS App instance
 resource "null_resource" "deployMASinst" {
-  depends_on = [module.pullsecret]
+ // depends_on = [module.pullsecret]
 
   provisioner "local-exec" {
     command = "${path.module}/scripts/create-yamlInst.sh '${local.chart_nameInst}' '${local.yaml_dirInst}' '${local.values_file}' '${var.appid}'"
