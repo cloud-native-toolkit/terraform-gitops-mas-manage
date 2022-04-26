@@ -1,0 +1,23 @@
+{{- if .Values.manage.enabled -}}
+apiVersion: apps.mas.ibm.com/v1
+kind: ManageApp
+metadata:
+  name: {{ .Values.subscriptions.masapp.instanceid }}
+  namespace: {{ .Values.subscriptions.masapp.namespace }}
+  labels:
+    mas.ibm.com/applicationId: manage
+    mas.ibm.com/instanceId: {{ .Values.subscriptions.masapp.instanceid }}
+    {{- include "ibm-masapp-operator-instance.labels" . | nindent 4 }}
+spec: 
+  bindings:
+    jdbc: system
+    mongo: system
+    kafka: system
+  settings:
+    messagesight:
+      storage:
+        class: block1000p
+        size: 100Gi
+    deployment:
+      size: medium
+{{- end }}
