@@ -21,6 +21,6 @@ fi
 
 ## need to set the app name id to enabled
 cat >> "${DEST_DIR}${VALUES_FILE}" << EOL
-${APPID}:
-  enabled: true
+"${APPID}":
+  "enabled": true
 EOL
