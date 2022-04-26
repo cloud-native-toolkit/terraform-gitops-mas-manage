@@ -50,7 +50,7 @@ module setup_clis {
   source = "github.com/cloud-native-toolkit/terraform-util-clis.git"
 }
 
-/*
+
 # create namespace for mas application
 module masappNamespace {
   source = "github.com/cloud-native-toolkit/terraform-gitops-namespace.git"
@@ -77,11 +77,11 @@ module "pullsecret" {
   docker_username = "cp"
   docker_password = var.entitlement_key
   secret_name = "ibm-entitlement"
-} */
+} 
 
 # Add values for MAS App operator
 resource "null_resource" "deployMASsub" {
-  //depends_on = [module.pullsecret]
+  depends_on = [module.pullsecret]
 
   provisioner "local-exec" {
     command = "${path.module}/scripts/create-yamlSub.sh '${local.chart_nameSub}' '${local.yaml_dirSub}' '${local.values_file}'"
@@ -94,7 +94,7 @@ resource "null_resource" "deployMASsub" {
 
 # Add values for MAS App instance
 resource "null_resource" "deployMASinst" {
- // depends_on = [module.pullsecret]
+  depends_on = [module.pullsecret]
 
   provisioner "local-exec" {
     command = "${path.module}/scripts/create-yamlInst.sh '${local.chart_nameInst}' '${local.yaml_dirInst}' '${local.values_file}' '${var.appid}'"
