@@ -123,7 +123,7 @@ resource gitops_module subscription {
 
 
 # Deploy MAS App instance
-resource gitops_module subscription {
+resource gitops_module instance {
   depends_on = [null_resource.deployMASinst,gitops_module.subscription]
 
   name        = local.name
