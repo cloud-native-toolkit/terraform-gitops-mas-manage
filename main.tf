@@ -2,7 +2,8 @@ locals {
   //name          = "mas-appdeploy"
   name          = "ibm-masapp-manage"
   bin_dir       = module.setup_clis.bin_dir
-  yaml_dir      = "${path.cwd}/.tmp/${local.name}/chart/${local.name}/"
+  tmp_dir       = "${path.cwd}/.tmp/${local.name}"
+  yaml_dir      = "${local.tmp_dir}/chart/${local.name}"
   //inst_dir      = "${local.yaml_dir}/instance"
   
   //chart_nameSub     = "ibm-masapp-operator-subscription"
@@ -17,7 +18,7 @@ locals {
   appname            = "ibm-mas-${var.appid}"
   namespace          = "mas-${var.instanceid}-${var.appid}"
   layer_config       = var.gitops_config[local.layer]
-  values_file        = "values.yaml"
+  //values_file        = "values.yaml"
   installPlan        = var.installPlan
  
 # set values content for subscription
@@ -89,7 +90,7 @@ resource "null_resource" "deployAppVals" {
   depends_on = [module.pullsecret]
 
   provisioner "local-exec" {
-    command = "${path.module}/scripts/create-yaml.sh '${local.name}' '${local.yaml_dir}' '${local.values_file}'"
+    command = "${path.module}/scripts/create-yaml.sh '${local.name}' '${local.yaml_dir}'"
 
     environment = {
       VALUES_CONTENT = yamlencode(local.values_content)
