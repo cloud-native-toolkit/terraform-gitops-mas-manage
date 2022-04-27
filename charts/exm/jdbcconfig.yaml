@@ -1,0 +1,23 @@
+apiVersion: config.mas.ibm.com/v1
+kind: JdbcCfg
+metadata:
+
+  name: mas8-jdbc-wsapp-demo-manage
+
+  namespace: mas-mas8-core
+
+  labels:
+    mas.ibm.com/applicationId: manage
+    mas.ibm.com/configScope: workspace-application
+    mas.ibm.com/instanceId: mas8
+    mas.ibm.com/workspaceId: demo
+spec:
+  config:
+    credentials:
+      secretName: mas8-usersupplied-jdbc-creds-wsapp-demo-manage
+    driverOptions:
+      sslConnection: 'False'
+    sslEnabled: false
+    url: 'jdbc:db2://150.239.109.78:30489/MAXIMO:sslConnection=False;'
+  displayName: 'jdbc:db2://150.239.109.78:30489/MAXIMO:sslConnection=False;'
+  type: external

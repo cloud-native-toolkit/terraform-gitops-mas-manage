@@ -1,0 +1,132 @@
+apiVersion: config.mas.ibm.com/v1
+kind: JdbcCfg
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: >-
+      {"apiVersion":"config.mas.ibm.com/v1","kind":"JdbcCfg","metadata":{"labels":{"mas.ibm.com/applicationId":"manage","mas.ibm.com/configScope":"workspace-application","mas.ibm.com/instanceId":"accmas","mas.ibm.com/workspaceId":"demo"},"name":"accmas-jdbc-wsapp-demo-manage","namespace":"mas-accmas-core"},"spec":{"config":{"credentials":{"secretName":"accmas-usersupplied-jdbc-creds-wsapp-demo-manage"},"driverOptions":{"sslConnection":"False"},"sslEnabled":false,"url":"jdbc:db2://10.39.124.254:32374/MXMNG02:sslConnection=False;"},"displayName":"jdbc:db2://10.39.124.254:32374/MXMNG02:sslConnection=False;","type":"external"}}
+  selfLink: >-
+    /apis/config.mas.ibm.com/v1/namespaces/mas-accmas-core/jdbccfgs/accmas-jdbc-wsapp-demo-manage
+  resourceVersion: '153429523'
+  name: accmas-jdbc-wsapp-demo-manage
+  uid: 6c603921-4ab5-4c60-8edb-bd30d4100386
+  creationTimestamp: '2021-11-10T11:22:43Z'
+  generation: 2
+  managedFields:
+    - apiVersion: config.mas.ibm.com/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:annotations':
+            .: {}
+            'f:kubectl.kubernetes.io/last-applied-configuration': {}
+          'f:labels':
+            .: {}
+            'f:mas.ibm.com/applicationId': {}
+            'f:mas.ibm.com/configScope': {}
+            'f:mas.ibm.com/instanceId': {}
+            'f:mas.ibm.com/workspaceId': {}
+        'f:spec':
+          .: {}
+          'f:config':
+            .: {}
+            'f:credentials':
+              .: {}
+              'f:secretName': {}
+            'f:driverOptions':
+              .: {}
+              'f:sslConnection': {}
+            'f:sslEnabled': {}
+            'f:url': {}
+          'f:displayName': {}
+          'f:type': {}
+      manager: OpenAPI-Generator
+      operation: Update
+      time: '2021-11-25T12:10:19Z'
+    - apiVersion: config.mas.ibm.com/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:ownerReferences':
+            .: {}
+            'k:{"uid":"a67fbb1f-0128-482c-aebf-4bd2df6016eb"}':
+              .: {}
+              'f:apiVersion': {}
+              'f:kind': {}
+              'f:name': {}
+              'f:uid': {}
+        'f:status':
+          'f:certificates': {}
+          'f:config':
+            .: {}
+            'f:credentials':
+              .: {}
+              'f:secretName': {}
+            'f:driverOptions':
+              .: {}
+              'f:sslConnection': {}
+            'f:sslEnabled': {}
+            'f:url': {}
+          'f:versions':
+            .: {}
+            'f:reconciled': {}
+      manager: Swagger-Codegen
+      operation: Update
+      time: '2022-04-12T19:56:42Z'
+    - apiVersion: config.mas.ibm.com/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:status':
+          .: {}
+          'f:conditions': {}
+      manager: ansible-operator
+      operation: Update
+      time: '2022-04-12T19:56:48Z'
+  namespace: mas-accmas-core
+  ownerReferences:
+    - apiVersion: core.mas.ibm.com/v1
+      kind: Suite
+      name: accmas
+      uid: a67fbb1f-0128-482c-aebf-4bd2df6016eb
+  labels:
+    mas.ibm.com/applicationId: manage
+    mas.ibm.com/configScope: workspace-application
+    mas.ibm.com/instanceId: accmas
+    mas.ibm.com/workspaceId: demo
+spec:
+  config:
+    credentials:
+      secretName: accmas-usersupplied-jdbc-creds-wsapp-demo-manage
+    driverOptions:
+      sslConnection: 'False'
+    sslEnabled: false
+    url: 'jdbc:db2://10.39.124.254:32374/MXMNG02:sslConnection=False;'
+  displayName: 'jdbc:db2://10.39.124.254:32374/MXMNG02:sslConnection=False;'
+  type: external
+status:
+  certificates: []
+  conditions:
+    - lastTransitionTime: '2022-04-12T19:56:48Z'
+      message: Configuration is ready to use
+      reason: Ready
+      status: 'True'
+      type: Ready
+    - ansibleResult:
+        changed: 1
+        completion: '2022-04-12T19:56:44.980454'
+        failures: 0
+        ok: 16
+        skipped: 29
+      lastTransitionTime: '2022-04-12T19:56:48Z'
+      message: Awaiting next reconciliation
+      reason: Successful
+      status: 'True'
+      type: Running
+  config:
+    credentials:
+      secretName: accmas-usersupplied-jdbc-creds-wsapp-demo-manage
+    driverOptions:
+      sslConnection: 'False'
+    sslEnabled: false
+    url: 'jdbc:db2://10.39.124.254:32374/MXMNG02:sslConnection=False;'
+  versions:
+    reconciled: 8.5.0

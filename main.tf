@@ -1,14 +1,16 @@
 locals {
-  name          = "mas-appdeploy"
+  //name          = "mas-appdeploy"
+  name          = "ibm-masapp-manage"
   bin_dir       = module.setup_clis.bin_dir
-  yaml_dir      = "${path.cwd}/.tmp/${local.name}/chart/${local.name}"
-  inst_dir      = "${local.yaml_dir}/instance"
+  yaml_dir      = "${path.cwd}/.tmp/${local.name}/charts/${local.name}"
+  //inst_dir      = "${local.yaml_dir}/instance"
   
-  chart_nameSub     = "ibm-masapp-operator-subscription"
-  chart_nameInst    = "ibm-masapp-operator-instance"
-  yaml_dirSub       = "${path.cwd}/.tmp/${local.name}/chart/${local.chart_nameSub}/"
-  yaml_dirInst      = "${path.cwd}/.tmp/${local.name}/chart/${local.chart_nameInst}/"
-
+  //chart_nameSub     = "ibm-masapp-operator-subscription"
+  //chart_nameInst    = "ibm-masapp-operator-instance"
+  //chart_name         = local.name
+  //yaml_dirSub       = "${path.cwd}/.tmp/${local.name}/chart/${local.chart_nameSub}/"
+  //yaml_dirInst      = "${path.cwd}/.tmp/${local.name}/chart/${local.chart_nameInst}/"
+  //yaml_dir           = "${path.cwd}/.tmp/${local.name}/chart/${local.chart_name}/"
   layer              = "services"
   type               = "operators"
   application_branch = "main"
@@ -17,16 +19,17 @@ locals {
   layer_config       = var.gitops_config[local.layer]
   values_file        = "values.yaml"
   installPlan        = var.installPlan
-
+ 
 # set values content for subscription
-  values_content_sub = {
+  values_content = {
     subscriptions = {
         masapp = {
           name = local.appname
+          instanceid = var.instanceid
+          namespace = local.namespace
           subscription = {
             channel = var.channel
             installPlanApproval = local.installPlan
-            name = var.appid
             source = var.catalog
             sourceNamespace = var.catalog_namespace
           }
@@ -34,6 +37,7 @@ locals {
       }
     }
 
+/*
 # set values content for app instance
   values_content_inst = {
     subscriptions = {
@@ -44,7 +48,8 @@ locals {
         }
       }
     }
-}
+    */
+} 
 
 module setup_clis {
   source = "github.com/cloud-native-toolkit/terraform-util-clis.git"
@@ -79,6 +84,35 @@ module "pullsecret" {
   secret_name = "ibm-entitlement"
 } 
 
+# Add values for charts
+resource "null_resource" "deployAppVals" {
+  depends_on = [module.pullsecret]
+
+  provisioner "local-exec" {
+    command = "${path.module}/scripts/create-yaml.sh '${local.name}' '${local.yaml}' '${local.values_file}'"
+
+    environment = {
+      VALUES_CONTENT = yamlencode(local.values_content)
+    }
+  }
+}
+
+# Deploy
+resource gitops_module masapp {
+  depends_on = [null_resource.deployAppVals]
+
+  name        = local.name
+  namespace   = local.namespace
+  content_dir = local.yaml_dir
+  server_name = var.server_name
+  layer       = local.layer
+  type        = local.type
+  branch      = local.application_branch
+  config      = yamlencode(var.gitops_config)
+  credentials = yamlencode(var.git_credentials)
+}
+
+/*
 # Add values for MAS App operator
 resource "null_resource" "deployMASsub" {
   depends_on = [module.pullsecret]
@@ -104,8 +138,9 @@ resource "null_resource" "deployMASinst" {
     }
   }
 }
+*/
 
-
+/*
 # Deploy MAS App operator
 resource gitops_module subscription {
   depends_on = [null_resource.deployMASsub]
@@ -136,3 +171,4 @@ resource gitops_module instance {
   config      = yamlencode(var.gitops_config)
   credentials = yamlencode(var.git_credentials)
 }
+*/

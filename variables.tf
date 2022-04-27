@@ -112,4 +112,5 @@ variable "entitlement_key" {
 variable "appid" {
   type        = string
   description = "MAS AppID to deploy.  Expects: manage"
+  default     = "manage"
 }
