@@ -2,7 +2,7 @@ locals {
   //name          = "mas-appdeploy"
   name          = "ibm-masapp-manage"
   bin_dir       = module.setup_clis.bin_dir
-  yaml_dir      = "${path.cwd}/.tmp/${local.name}/charts/${local.name}"
+  yaml_dir      = "${path.cwd}/.tmp/${local.name}/chart/${local.name}/"
   //inst_dir      = "${local.yaml_dir}/instance"
   
   //chart_nameSub     = "ibm-masapp-operator-subscription"
