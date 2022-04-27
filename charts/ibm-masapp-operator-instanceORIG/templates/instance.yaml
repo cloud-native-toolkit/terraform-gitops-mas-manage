@@ -1,9 +1,0 @@
-apiVersion: apps.mas.ibm.com/v1
-kind: ManageApp
-metadata:
-  name: {{ .Values.subscriptions.masapp.instanceid }}
-  namespace: {{ .Values.subscriptions.masapp.namespace }}
-  labels:
-    mas.ibm.com/applicationId: {{ .Values.subscriptions.masapp.name }}
-    mas.ibm.com/instanceId: {{ .Values.subscriptions.masapp.instanceid }}
-spec: {}

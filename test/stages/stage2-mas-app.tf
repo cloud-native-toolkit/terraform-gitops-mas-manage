@@ -7,7 +7,6 @@ module "gitops_module" {
   kubeseal_cert = module.gitops.sealed_secrets_cert
 
   instanceid = "mas8"
-  //appid ="manage"
   entitlement_key = module.cp_catalogs.entitlement_key
 }
 
