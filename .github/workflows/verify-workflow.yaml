@@ -28,6 +28,10 @@ on:
         required: true
       CP_ENTITLEMENT_KEY:
         required: true
+      TF_VAR_database_username:
+        required: true
+      TF_VAR_database_password:
+        required: true
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
