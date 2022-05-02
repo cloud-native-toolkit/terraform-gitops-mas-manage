@@ -1,14 +1,17 @@
 locals {
-  name          = "ibm-masapp-manage"
-  bin_dir       = module.setup_clis.bin_dir
-  tmp_dir       = "${path.cwd}/.tmp/${local.name}"
-  yaml_dir      = "${local.tmp_dir}/chart/${local.name}"
+  name           = "ibm-masapp-manage"
+  bin_dir        = module.setup_clis.bin_dir
+  tmp_dir        = "${path.cwd}/.tmp/${local.name}"
+  yaml_dir       = "${local.tmp_dir}/chart/${local.name}"
+  secret_dir     = "${local.tmp_dir}/secrets"
+  db_secret_name = "${var.instanceid}-jdbc-creds-wsapp-manage"
 
   layer              = "services"
   type               = "operators"
   application_branch = "main"
   appname            = "ibm-mas-${var.appid}"
   namespace          = "mas-${var.instanceid}-${var.appid}"
+  core-namespace     = "mas-${var.instanceid}-core"
   layer_config       = var.gitops_config[local.layer]
   installPlan        = var.installPlan
  
@@ -63,6 +66,31 @@ module "pullsecret" {
   secret_name = "ibm-entitlement"
 } 
 
+# Add SBO module
+
+
+# Add jdbc config secret
+resource null_resource create_secret {
+  provisioner "local-exec" {
+    command = "${path.module}/scripts/create-secret.sh '${local.core-namespace}' '${var.db_user}' '${var.db_password}' '${local.db_secret_name}' '${local.secret_dir}' '${local.name}-password'"
+  }
+}
+
+module seal_secrets {
+  depends_on = [null_resource.create_secret]
+
+  source = "github.com/cloud-native-toolkit/terraform-util-seal-secrets.git"
+
+  source_dir    = local.secret_dir
+  dest_dir      = "${local.yaml_dir}/templates"
+  kubeseal_cert = var.kubeseal_cert
+  label         = local.name
+}
+
+# build jdbc config yaml
+
+
+
 # Add values for charts
 resource "null_resource" "deployAppVals" {
   depends_on = [module.pullsecret]
@@ -78,7 +106,7 @@ resource "null_resource" "deployAppVals" {
 
 # Deploy
 resource gitops_module masapp {
-  depends_on = [null_resource.deployAppVals]
+  depends_on = [null_resource.deployAppVals,module.seal_secrets]
 
   name        = local.name
   namespace   = local.namespace

@@ -114,3 +114,18 @@ variable "appid" {
   description = "MAS AppID to deploy.  Expects: manage"
   default     = "manage"
 }
+
+variable "db_user" {
+  type = string
+  sensitive = true
+  description = "database connection username"
+
+}
+
+variable "db_password" {
+  type = string
+  sensitive = true
+  description = "database connection password"
+  
+}
+
