@@ -8,8 +8,8 @@ module "gitops_module" {
 
   instanceid = "mas8"
   entitlement_key = module.cp_catalogs.entitlement_key
-  db_user = var.database_username
-  db_password = var.database_password
+  db_user = "admin"
+  db_password = "password"
   
 }
 

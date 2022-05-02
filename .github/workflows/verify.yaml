@@ -30,7 +30,3 @@ jobs:
     uses: cloud-native-toolkit/action-workflows/.github/workflows/release-module.yaml@v1
     secrets:
       TOKEN: ${{ secrets.TOKEN }}
-
-env:  
-      TF_VAR_database_username: ${{ secrets.DATABASE_USERNAME }}
-      TF_VAR_database_password: ${{ secrets.DATABASE_PASSWORD }}
