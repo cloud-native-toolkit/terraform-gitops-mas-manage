@@ -64,8 +64,6 @@ jobs:
           AWS_CLUSTER_PASSWORD: ${{ secrets.AWS_CLUSTER_PASSWORD }}
           IBM_CLUSTER_USERNAME: "apikey"
           IBM_CLUSTER_PASSWORD: ${{ secrets.IBMCLOUD_API_KEY }}
-          TF_VAR_database_username: ${{ secrets.DATABASE_USERNAME }}
-          TF_VAR_database_password: ${{ secrets.DATABASE_PASSWORD }}
           ENVIRONMENT: ${{ matrix.testcase }}
         shell: bash
         run: |
