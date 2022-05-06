@@ -1,0 +1,26 @@
+apiVersion: config.mas.ibm.com/v1
+kind: JdbcCfg
+metadata:
+  name: {{ .Values.subscriptions.database.jdbcname }}
+  namespace: {{ .Values.subscriptions.masapp.core-namespace }}
+  labels:
+    mas.ibm.com/applicationId: {{ .Values.subscriptions.masapp.appid }}
+    mas.ibm.com/configScope: workspace-application
+    mas.ibm.com/instanceId: {{ .Values.subscriptions.masapp.instanceid }}
+    mas.ibm.com/workspaceId: {{ .Values.subscriptions.masapp.workspaceid }}
+    {{- include "ibm-masapp-manage.labels" . | nindent 4 }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  config:
+    credentials:
+      secretName: {{ .Values.subscriptions.database.secretname }}
+    sslEnabled: true
+    url: {{ .Values.subscriptions.database.url | quote }}
+  
+  displayName: {{ .Values.subscriptions.database.url | quote }}
+  type: external
+  certificates:
+    - alias: maximomanage
+      crt: |
+{{ .Values.dbcert | nindent 8 }}

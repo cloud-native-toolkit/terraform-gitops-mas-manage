@@ -5,6 +5,7 @@ locals {
   yaml_dir       = "${local.tmp_dir}/chart/${local.name}"
   secret_dir     = "${local.tmp_dir}/secrets"
   db_secret_name = "${var.instanceid}-jdbc-creds-wsapp-manage"
+  jdbc_name      = "${var.instanceid}-jdbc-wsapp-${var.workspace_id}-${var.appid}"
 
   layer              = "services"
   type               = "operators"
@@ -20,14 +21,23 @@ locals {
     subscriptions = {
         masapp = {
           name = local.appname
+          appid = var.appid
           instanceid = var.instanceid
           namespace = local.namespace
+          core-namespace = local.core-namespace
+          workspaceid = var.workspace_id
           subscription = {
             channel = var.channel
             installPlanApproval = local.installPlan
             source = var.catalog
             sourceNamespace = var.catalog_namespace
           }
+        }
+        database = {
+          url = var.db_url
+          secretname = local.db_secret_name
+          jdbcname = local.jdbc_name
+
         }
       }
     }
@@ -67,7 +77,15 @@ module "pullsecret" {
 } 
 
 # Add SBO module
+module "sbo" {
+  source = "github.com/cloud-native-toolkit/terraform-gitops-service-binding-operator.git"
 
+  gitops_config = var.gitops_config
+  git_credentials = var.git_credentials
+  server_name = var.server_name
+  kubeseal_cert = var.kubeseal_cert
+  namespace = "openshift-operators"
+} 
 
 # Add jdbc config secret
 resource null_resource create_secret {
@@ -100,13 +118,14 @@ resource "null_resource" "deployAppVals" {
 
     environment = {
       VALUES_CONTENT = yamlencode(local.values_content)
+      DB_CERT = var.db_cert
     }
   }
 }
 
 # Deploy
 resource gitops_module masapp {
-  depends_on = [null_resource.deployAppVals,module.seal_secrets]
+  depends_on = [null_resource.deployAppVals,module.seal_secrets,module.sbo]
 
   name        = local.name
   namespace   = local.namespace

@@ -32,6 +32,10 @@ on:
         required: true
       DATABASE_PASSWORD:
         required: true
+      DATABASE_CERT:
+        required: true
+      DATABASE_URL:
+        required: true
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -100,6 +104,8 @@ jobs:
           TF_VAR_ibmcloud_api_key: ${{ secrets.IBMCLOUD_API_KEY }}
           TF_VAR_database_username: ${{ secrets.DATABASE_USERNAME }}
           TF_VAR_database_password: ${{ secrets.DATABASE_PASSWORD }}
+          TF_VAR_database_cert: ${{ secrets.DATABASE_CERT }}
+          TF_VAR_database_url: ${{ secrets.DATABASE_URL }}
 
       - name: Verify destroy on ${{ matrix.testcase }}
         uses: cloud-native-toolkit/action-module-verify-destroy@main
@@ -118,3 +124,5 @@ jobs:
           TF_VAR_ibmcloud_api_key: ${{ secrets.IBMCLOUD_API_KEY }}
           TF_VAR_database_username: ${{ secrets.DATABASE_USERNAME }}
           TF_VAR_database_password: ${{ secrets.DATABASE_PASSWORD }}
+          TF_VAR_database_cert: ${{ secrets.DATABASE_CERT }}
+          TF_VAR_database_url: ${{ secrets.DATABASE_URL }}

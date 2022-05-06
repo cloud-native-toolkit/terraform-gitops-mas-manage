@@ -24,6 +24,8 @@ jobs:
       CP_ENTITLEMENT_KEY: ${{ secrets.CP_ENTITLEMENT_KEY }}
       DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
       DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+      DATABASE_CERT: ${{ secrets.DATABASE_CERT }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
   verifyMetadata:
     uses: cloud-native-toolkit/action-workflows/.github/workflows/verify-module-metadata.yaml@v1

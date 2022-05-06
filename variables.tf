@@ -115,6 +115,12 @@ variable "appid" {
   default     = "manage"
 }
 
+variable "workspace_id" {
+  type = string
+  description = "MAS workspace id"
+  
+}
+
 variable "db_user" {
   type = string
   sensitive = true
@@ -129,3 +135,16 @@ variable "db_password" {
   
 }
 
+variable "db_cert" {
+  type = string
+  sensitive = true
+  description = "database connection public cert"
+  
+}
+
+variable "db_url" {
+  type = string
+  sensitive = true
+  description = "database connection url"
+  
+}

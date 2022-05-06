@@ -83,3 +83,11 @@ variable "database_username" {
 variable "database_password" {
   type = string
 }
+
+variable "database_url" {
+  type = string
+}
+
+variable "database_cert" {
+  type = string
+}
