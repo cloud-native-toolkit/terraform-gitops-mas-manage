@@ -41,14 +41,6 @@ fi
 echo "Printing argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml"
 cat "argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml"
 
-#if [[ ! -f "payload/${LAYER}/namespace/${NAMESPACE}/${COMPONENT_NAME}/values.yaml" ]]; then
-#  echo "Application values not found - payload/${LAYER}/namespace/${NAMESPACE}/${COMPONENT_NAME}/values.yaml"
-#  exit 1
-#fi
-
-#echo "Printing payload/${LAYER}/namespace/${NAMESPACE}/${COMPONENT_NAME}/ibm-mas-man-op.yaml"
-#cat "payload/${LAYER}/namespace/${NAMESPACE}/${COMPONENT_NAME}/ibm-mas-man-op.yaml"
-
 echo "Printing payload/${LAYER}/namespace/${NAMESPACE}/${COMPONENT_NAME}/values.yaml"
 cat "payload/${LAYER}/namespace/${NAMESPACE}/${COMPONENT_NAME}/values.yaml"
 
@@ -68,13 +60,13 @@ else
 fi
 
 count=0
-until kubectl get deployment ibm-mas-manage-operator -n ${NAMESPACE} || [[ $count -eq 10 ]]; do
+until kubectl get deployment ibm-mas-manage-operator -n ${NAMESPACE} || [[ $count -eq 20 ]]; do
   echo "Waiting for deployment/ibm-mas-manage-operator in ${NAMESPACE}"
   count=$((count + 1))
   sleep 60
 done
 
-if [[ $count -eq 10 ]]; then
+if [[ $count -eq 20 ]]; then
   echo "Timed out waiting for deployment/ibm-mas-manage-operator in ${NAMESPACE}"
   kubectl get all -n "${NAMESPACE}"
   exit 1

@@ -9,10 +9,10 @@ module "gitops_module" {
   instanceid = "masdemo"
   workspace_id = "demo"
   entitlement_key = module.cp_catalogs.entitlement_key
-  /*db_user = var.database_username
+  db_user = var.database_username
   db_password = var.database_password
   db_cert = var.database_cert
-  db_url = var.database_url */
+  db_url = var.database_url 
   db_schema = ""
   db_secret = ""
 

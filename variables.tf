@@ -121,7 +121,7 @@ variable "workspace_id" {
   
 }
 
-/*variable "db_user" {
+variable "db_user" {
   type = string
   sensitive = true
   description = "database connection username"
@@ -147,7 +147,7 @@ variable "db_url" {
   sensitive = true
   description = "database connection url"
   
-} */
+} 
 
 variable "db_schema" {
   type = string
