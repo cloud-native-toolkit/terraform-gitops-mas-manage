@@ -121,7 +121,7 @@ resource "null_resource" "deployAppVals" {
 
 # Deploy
 resource gitops_module masapp {
-  depends_on = [null_resource.deployAppVals,module.seal_secrets,module.sbo]
+  depends_on = [null_resource.deployAppVals, module.sbo]
 
   name        = local.name
   namespace   = local.namespace
