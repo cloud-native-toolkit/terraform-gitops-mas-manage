@@ -3,9 +3,12 @@ locals {
   bin_dir        = module.setup_clis.bin_dir
   tmp_dir        = "${path.cwd}/.tmp/${local.name}"
   yaml_dir       = "${local.tmp_dir}/chart/${local.name}"
-  secret_dir     = "${local.tmp_dir}/secrets"
-  db_secret_name = "${var.instanceid}-jdbc-creds-wsapp-manage"
-  jdbc_name      = "${var.instanceid}-jdbc-wsapp-${var.workspace_id}-${var.appid}"
+  //secret_dir     = "${local.tmp_dir}/secrets"
+  //db_secret_name = "${var.instanceid}-jdbc-creds-wsapp-manage"
+  //jdbc_name      = "${var.instanceid}-jdbc-wsapp-${var.workspace_id}-${var.appid}"
+  workspace_name = "${var.instanceid}-${var.workspace_id}"
+
+
 
   layer              = "services"
   type               = "operators"
@@ -33,11 +36,8 @@ locals {
             sourceNamespace = var.catalog_namespace
           }
         }
-        database = {
-          url = var.db_url
-          secretname = local.db_secret_name
-          jdbcname = local.jdbc_name
-
+        workspace = {
+          name = local.workspace_name
         }
       }
     }
@@ -57,6 +57,7 @@ module masappNamespace {
   name = "${local.namespace}"
   create_operator_group = true
 }
+
 
 # add entitlement secret
 module "pullsecret" {
@@ -87,31 +88,26 @@ module "sbo" {
   namespace = "openshift-operators"
 } 
 
-# Add jdbc config secret
-resource null_resource create_secret {
-  provisioner "local-exec" {
-    command = "${path.module}/scripts/create-secret.sh '${local.core-namespace}' '${var.db_user}' '${var.db_password}' '${local.db_secret_name}' '${local.secret_dir}' '${local.name}-password'"
-  }
+# Add JDBC Config
+module "jdbc_config"{
+  source = "github.com/cloud-native-toolkit/terraform-gitops-mas-jdbc.git"
+
+    gitops_config = var.gitops_config
+    git_credentials = var.git_credentials
+    server_name = var.server_name
+    kubeseal_cert = var.kubeseal_cert
+
+    instanceid = var.instanceid
+    workspace_id = var.workspace_id
+    db_user = var.database_username
+    db_password = var.database_password
+    db_cert = var.database_cert
+    db_url = var.database_url 
 }
-
-module seal_secrets {
-  depends_on = [null_resource.create_secret]
-
-  source = "github.com/cloud-native-toolkit/terraform-util-seal-secrets.git"
-
-  source_dir    = local.secret_dir
-  dest_dir      = "${local.yaml_dir}/templates"
-  kubeseal_cert = var.kubeseal_cert
-  label         = local.name
-}
-
-# build jdbc config yaml
-
-
 
 # Add values for charts
 resource "null_resource" "deployAppVals" {
-  depends_on = [module.pullsecret]
+  depends_on = [module.pullsecret, module.jdbc_config]
 
   provisioner "local-exec" {
     command = "${path.module}/scripts/create-yaml.sh '${local.name}' '${local.yaml_dir}'"

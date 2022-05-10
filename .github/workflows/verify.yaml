@@ -10,9 +10,22 @@ on:
 jobs:
   verify:
     if: ${{ !contains( github.event.pull_request.labels.*.name, 'skip ci' ) }}
+    #uses: cloud-native-toolkit/action-workflows/.github/workflows/verify-gitops-module.yaml@v1
     uses: ./.github/workflows/verify-workflow.yaml
+    with:
+      testcase: ocp4_latest_gitops_maximo
     secrets:
+      GIT_ORG: ${{ secrets.GIT_ORG }}
+      AWS_CLUSTER_USERNAME: ${{ secrets.AWS_CLUSTER_USERNAME }}
+      AWS_CLUSTER_PASSWORD: ${{ secrets.AWS_CLUSTER_PASSWORD }}
       IBMCLOUD_API_KEY: ${{ secrets.IBMCLOUD_API_KEY }}
+      GIT_ADMIN_USERNAME: ${{ secrets.GIT_ADMIN_USERNAME }}
+      GIT_ADMIN_TOKEN: ${{ secrets.GIT_ADMIN_TOKEN }}
+      CP_ENTITLEMENT_KEY: ${{ secrets.CP_ENTITLEMENT_KEY }}
+      DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+      DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+      DATABASE_CERT: ${{ secrets.DATABASE_CERT }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
   verifyMetadata:
     uses: cloud-native-toolkit/action-workflows/.github/workflows/verify-module-metadata.yaml@v1
@@ -21,4 +34,5 @@ jobs:
     needs: [verify, verifyMetadata]
     uses: cloud-native-toolkit/action-workflows/.github/workflows/release-module.yaml@v1
     secrets:
-      TOKEN: ${{ secrets.TOKEN }}
+      TOKEN: ${{ secrets.TOKEN }}  
+      

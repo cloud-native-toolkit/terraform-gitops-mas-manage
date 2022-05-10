@@ -6,13 +6,15 @@ module "gitops_module" {
   server_name = module.gitops.server_name
   kubeseal_cert = module.gitops.sealed_secrets_cert
 
-  instanceid = "mas8"
+  instanceid = "masdemo"
   workspace_id = "demo"
   entitlement_key = module.cp_catalogs.entitlement_key
-  db_user = var.database_username
+  /*db_user = var.database_username
   db_password = var.database_password
   db_cert = var.database_cert
-  db_url = var.database_url
+  db_url = var.database_url */
+  db_schema = ""
+  db_secret = ""
 
   
 }

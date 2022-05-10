@@ -90,4 +90,4 @@ variable "database_url" {
 
 variable "database_cert" {
   type = string
-}
+} 

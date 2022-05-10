@@ -36,3 +36,543 @@ spec:
         indexSpace: MAXINDEX
         tableSpace: MAXDATA
 
+---
+apiVersion: "{{ mas_app_ws_apiversion }}"
+kind: "{{ mas_app_ws_kind }}"
+metadata:
+  name: "{{ mas_instance_id }}-{{ mas_workspace_id }}"
+  namespace: "{{ mas_app_namespace }}"
+  labels:
+    mas.ibm.com/instanceId: "{{ mas_instance_id }}"
+    mas.ibm.com/workspaceId: "{{ mas_workspace_id }}"
+    mas.ibm.com/applicationId: "{{ mas_app_id }}"
+spec: {{ mas_app_ws_spec }}
+
+---
+
+apiVersion: apps.mas.ibm.com/v1
+kind: ManageWorkspace
+metadata:
+  name: "{{ .Values.workspace.name }}"
+  namespace: "{{ .Values.subscriptions.namespace }}"
+  labels:
+    mas.ibm.com/instanceId: "{{ .Values.subscriptions.masapp.instanceid }}"
+    mas.ibm.com/workspaceId: "{{ .Values.subscritions.masapp.workspaceid }}"
+    mas.ibm.com/applicationId: "{{ .Values.subscriptions.masapp.appid }}"
+    {{- include "ibm-masapp-manage.labels" . | nindent 4 }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "3" 
+spec: {{ mas_app_ws_spec }}
+
+
+
+
+
+---
+apiVersion: apps.mas.ibm.com/v1
+kind: ManageWorkspace
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: >-
+      {"apiVersion":"apps.mas.ibm.com/v1","kind":"ManageWorkspace","metadata":{"labels":{"mas.ibm.com/applicationId":"manage","mas.ibm.com/instanceId":"masdemo","mas.ibm.com/workspaceId":"demo"},"name":"masdemo-demo","namespace":"mas-masdemo-manage"},"spec":{"bindings":{"jdbc":"workspace-application","mso":"workspace"},"components":{"base":{"version":"latest"},"health":{"version":"latest"},"hse":{"version":"latest"},"oilandgas":{"version":"latest"},"spatial":{"version":"latest"},"utilities":{"version":"latest"}},"settings":{"db":{"dbSchema":"MAXIMO","encryptionSecret":"demo-manage-db--es","maxinst":{"bypassUpgradeVersionCheck":false,"db2Vargraphic":true,"demodata":true,"indexSpace":"maxindex","tableSpace":"maxdata"}},"deployment":{}}}}
+  resourceVersion: '18000453'
+  name: masdemo-demo
+  uid: b201e663-ea29-4161-97c7-7497ead2639f
+  creationTimestamp: '2022-05-02T11:25:31Z'
+  generation: 6
+  managedFields:
+    - apiVersion: apps.mas.ibm.com/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:spec':
+          'f:settings':
+            'f:db':
+              'f:encryptionSecret': {}
+      manager: Mozilla
+      operation: Update
+      time: '2022-05-05T15:40:09Z'
+    - apiVersion: apps.mas.ibm.com/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:annotations':
+            .: {}
+            'f:kubectl.kubernetes.io/last-applied-configuration': {}
+          'f:labels':
+            .: {}
+            'f:mas.ibm.com/applicationId': {}
+            'f:mas.ibm.com/instanceId': {}
+            'f:mas.ibm.com/workspaceId': {}
+        'f:spec':
+          .: {}
+          'f:bindings':
+            .: {}
+            'f:jdbc': {}
+            'f:mso': {}
+          'f:components':
+            .: {}
+            'f:base':
+              .: {}
+              'f:version': {}
+            'f:health':
+              .: {}
+              'f:version': {}
+            'f:hse':
+              .: {}
+              'f:version': {}
+            'f:oilandgas':
+              .: {}
+              'f:version': {}
+            'f:spatial':
+              .: {}
+              'f:version': {}
+            'f:utilities':
+              .: {}
+              'f:version': {}
+          'f:settings':
+            .: {}
+            'f:db':
+              .: {}
+              'f:dbSchema': {}
+              'f:maxinst':
+                .: {}
+                'f:bypassUpgradeVersionCheck': {}
+                'f:db2Vargraphic': {}
+                'f:demodata': {}
+                'f:indexSpace': {}
+                'f:tableSpace': {}
+            'f:deployment':
+              .: {}
+              'f:buildTag': {}
+              'f:mode': {}
+              'f:persistentVolumes': {}
+              'f:serverTimezone': {}
+        'f:status':
+          'f:bindings':
+            .: {}
+            'f:jdbc': {}
+          'f:components':
+            'f:transportation':
+              .: {}
+              'f:enabled': {}
+              'f:version': {}
+            'f:oilandgas':
+              .: {}
+              'f:enabled': {}
+              'f:version': {}
+            'f:sapadapter':
+              .: {}
+              'f:enabled': {}
+              'f:version': {}
+            'f:base':
+              .: {}
+              'f:enabled': {}
+              'f:version': {}
+            'f:hse':
+              .: {}
+              'f:enabled': {}
+              'f:version': {}
+            .: {}
+            'f:anywhere':
+              .: {}
+              'f:enabled': {}
+              'f:version': {}
+            'f:spatial':
+              .: {}
+              'f:enabled': {}
+              'f:version': {}
+            'f:health':
+              .: {}
+              'f:enabled': {}
+              'f:url': {}
+              'f:version': {}
+            'f:serviceprovider':
+              .: {}
+              'f:enabled': {}
+              'f:version': {}
+            'f:nuclear':
+              .: {}
+              'f:enabled': {}
+              'f:version': {}
+            'f:aviation':
+              .: {}
+              'f:enabled': {}
+              'f:version': {}
+            'f:utilities':
+              .: {}
+              'f:enabled': {}
+              'f:version': {}
+            'f:acm':
+              .: {}
+              'f:enabled': {}
+              'f:version': {}
+            'f:workday':
+              .: {}
+              'f:enabled': {}
+              'f:version': {}
+            'f:oracleadapter':
+              .: {}
+              'f:enabled': {}
+              'f:version': {}
+            'f:civil':
+              .: {}
+              'f:enabled': {}
+              'f:version': {}
+          'f:milestones':
+            .: {}
+            'f:activated':
+              .: {}
+              'f:anonymousId': {}
+              'f:timestamp': {}
+              'f:transactionId': {}
+          'f:settings':
+            'f:languages':
+              .: {}
+              'f:baseLang': {}
+            .: {}
+            'f:bdiConfigurations': {}
+            'f:db':
+              .: {}
+              'f:dbSchema': {}
+              'f:encryptionSecret': {}
+              'f:maxinst':
+                .: {}
+                'f:bypassUpgradeVersionCheck': {}
+                'f:db2Vargraphic': {}
+                'f:demodata': {}
+                'f:indexSpace': {}
+                'f:tableSpace': {}
+            'f:aio':
+              .: {}
+              'f:install': {}
+              'f:version': {}
+            'f:bdi':
+              .: {}
+              'f:version': {}
+            'f:deployment':
+              'f:buildTag': {}
+              'f:useMasSmtpcfg': {}
+              .: {}
+              'f:persistentVolumes': {}
+              'f:serverTimezone': {}
+              'f:ephemeralStorage':
+                .: {}
+                'f:adminBuild': {}
+                'f:serverBundleBuild': {}
+              'f:mode': {}
+              'f:importedCerts': {}
+              'f:serverBundles': {}
+            'f:customizationList': {}
+            'f:customization': {}
+          'f:version':
+            .: {}
+            'f:reconciled': {}
+          'f:versions':
+            .: {}
+            'f:reconciled': {}
+      manager: OpenAPI-Generator
+      operation: Update
+      time: '2022-05-06T15:33:02Z'
+    - apiVersion: apps.mas.ibm.com/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:finalizers':
+            .: {}
+            'v:"manageworkspace.apps.mas.ibm.com/finalizer"': {}
+        'f:status':
+          .: {}
+          'f:conditions': {}
+      manager: ansible-operator
+      operation: Update
+      time: '2022-05-06T15:34:31Z'
+  namespace: mas-masdemo-manage
+  finalizers:
+    - manageworkspace.apps.mas.ibm.com/finalizer
+  labels:
+    mas.ibm.com/applicationId: manage
+    mas.ibm.com/instanceId: masdemo
+    mas.ibm.com/workspaceId: demo
+spec:
+  bindings:
+    jdbc: workspace-application
+    mso: workspace
+  components:
+    base:
+      version: latest
+    health:
+      version: latest
+    hse:
+      version: latest
+    oilandgas:
+      version: latest
+    spatial:
+      version: latest
+    utilities:
+      version: latest
+  settings:
+    db:
+      dbSchema: MAXIMO
+      encryptionSecret: demo-manage-encryptionsecret
+      maxinst:
+        bypassUpgradeVersionCheck: false
+        db2Vargraphic: true
+        demodata: true
+        indexSpace: maxindex
+        tableSpace: maxdata
+    deployment:
+      buildTag: latest
+      mode: up
+      persistentVolumes: []
+      serverTimezone: GMT
+status:
+  bindings:
+    jdbc: workspace-application
+  components:
+    aviation:
+      enabled: false
+      version: 8.0.2
+    spatial:
+      enabled: true
+      version: 8.3.1
+    nuclear:
+      enabled: false
+      version: 8.0.0
+    serviceprovider:
+      enabled: false
+      version: 8.0.0
+    utilities:
+      enabled: true
+      version: 8.0.0
+    acm:
+      enabled: false
+      version: 8.0.2
+    workday:
+      enabled: false
+      version: 8.0.0
+    transportation:
+      enabled: false
+      version: 8.0.1
+    sapadapter:
+      enabled: false
+      version: 8.0.0
+    oracleadapter:
+      enabled: false
+      version: 8.1.0
+    base:
+      enabled: true
+      version: 8.3.1
+    civil:
+      enabled: false
+      version: 8.2.1
+    oilandgas:
+      enabled: true
+      version: 8.0.0
+    hse:
+      enabled: true
+      version: 8.0.0
+    anywhere:
+      enabled: false
+      version: 8.0.1
+    health:
+      enabled: true
+      url: /maximo/oslc/graphite/relengineer
+      version: 8.5.1
+  conditions:
+    - lastTransitionTime: '2022-05-06T15:34:31Z'
+      message: Manage deployed in workspace demo
+      reason: Ready
+      status: 'True'
+      type: Ready
+    - lastTransitionTime: '2022-05-06T15:34:31Z'
+      message: Build generated and tagged with 20220504T120524
+      reason: Build completed
+      status: 'True'
+      type: BuildReady
+    - lastTransitionTime: '2022-05-06T15:34:31Z'
+      message: ' UpdateDB/Maxinst Completed, all - 1 of 1 pods ready,'
+      reason: Ready
+      status: 'True'
+      type: DeploymentReady
+    - lastTransitionTime: '2022-05-06T15:34:31Z'
+      message: Awaiting next reconciliation
+      reason: Successful
+      status: 'True'
+      type: DeploymentCR
+    - lastTransitionTime: '2022-05-05T14:59:40Z'
+      message: ''
+      reason: ''
+      status: 'False'
+      type: Failure
+    - ansibleResult:
+        changed: 1
+        completion: '2022-05-06T15:34:31.054719'
+        failures: 0
+        ok: 132
+        skipped: 61
+      lastTransitionTime: '2022-05-05T15:14:43Z'
+      message: Awaiting next reconciliation
+      reason: Successful
+      status: 'True'
+      type: Running
+    - lastTransitionTime: '2022-05-06T15:34:31Z'
+      message: Last reconciliation succeeded
+      reason: Successful
+      status: 'True'
+      type: Successful
+  milestones:
+    activated:
+      anonymousId: a2a61a66-b881-4f23-8991-e46012d658fa
+      timestamp: '2022-05-02T11:52:17.802123+00:00'
+      transactionId: 063397a1-7294-4c7b-900c-d3db6a2439c0
+  settings:
+    aio:
+      install: false
+      version: ''
+    bdi:
+      version: 8.0.4
+    bdiConfigurations:
+      - logLevel: info
+        asyncjob:
+          deleteOnStartup: true
+          retentionDays: 30
+        cache:
+          assetsPerPage: 512
+          avMemMode: 102400
+          cachePages: 256
+          deleteOnStartup: false
+          poolMax: 8
+          poolMin: 1
+        maxMemory: 16384m
+        name: bdi-1
+        vrex:
+          enabled: true
+          pulseMinutes: 180
+          runOnStart: true
+        acmOptions: ECP|MEL|SRC|FLB|OWO|OWT|OWJ|XPM|TSX|PME|SQP|-TRPNR
+        monitor:
+          cleanUpDays: 30
+          enabled: true
+          pulseSeconds: 10
+          threads: 1
+        select: |-
+          <bdi-select>
+          <end-item-select-oracle>
+            select a.assetid, a.siteid, coalesce((select max(updatedtime) from plusaanbdistatus where assetid = a.assetid and siteid = a.siteid and inactivetime is null and currentconfig = 1), (sysdate-365)), a.tenantid
+            from asset a
+            where not exists (select 1 from synonymdomain where value=a.status and maxvalue in ('DECOMMISSIONED', 'NOT READY') and domainid='LOCASSETSTATUS')
+            and a.moved = 0
+            and a.plusacatid is not null
+            and a.parent is null
+            and a.plusamodelid is not null
+            order by 3 asc
+            </end-item-select-oracle>
+          <end-item-select-db2>
+            select a.assetid, a.siteid, coalesce((select max(updatedtime) from plusaanbdistatus where assetid = a.assetid and siteid = a.siteid and inactivetime is null and currentconfig = 1), (current timestamp - 1 year)), a.tenantid
+            from asset a
+            where not exists (select 1 from synonymdomain where value=a.status and maxvalue in ('DECOMMISSIONED', 'NOT READY') and domainid='LOCASSETSTATUS')
+            and a.moved = 0
+            and a.plusacatid is not null
+            and a.parent is null
+            and a.plusamodelid is not null
+            order by 3 asc
+          </end-item-select-db2>
+          <end-item-select-sqlserver>
+            select a.assetid, a.siteid, coalesce((select max(updatedtime) from plusaanbdistatus where assetid = a.assetid and siteid = a.siteid and inactivetime is null and currentconfig = 1), (getDate()-365)), a.tenantid
+            from asset a
+            where not exists (select 1 from synonymdomain where value=a.status and maxvalue in ('DECOMMISSIONED', 'NOT READY') and domainid='LOCASSETSTATUS')
+            and a.moved = 0
+            and a.plusacatid is not null
+            and a.parent is null
+            and a.plusamodelid is not null
+            order by 3 asc
+          </end-item-select-sqlserver>
+          <non-end-item-select-oracle>
+            select a.assetid, a.siteid, coalesce((select max(updatedtime) from plusaanbdistatus where assetid = a.assetid and siteid = a.siteid and inactivetime is null and currentconfig = 1), (sysdate-365)), a.tenantid
+            from asset a
+            where not exists (select 1 from synonymdomain where value=a.status and maxvalue in ('DECOMMISSIONED', 'NOT READY') and domainid='LOCASSETSTATUS')
+            and a.moved = 0
+            and a.plusacatid is not null
+            and a.parent is null
+            and a.plusamodelid is null
+            order by 3 asc
+          </non-end-item-select-oracle>
+          <non-end-item-select-db2>
+            select a.assetid, a.siteid, coalesce((select max(updatedtime) from plusaanbdistatus where assetid = a.assetid and siteid = a.siteid and inactivetime is null and currentconfig = 1), (current timestamp - 1 year)), a.tenantid
+            from asset a
+            where not exists (select 1 from synonymdomain where value=a.status and maxvalue in ('DECOMMISSIONED', 'NOT READY') and domainid='LOCASSETSTATUS')
+            and a.moved = 0
+            and a.plusacatid is not null
+            and a.parent is null
+            and a.plusamodelid is null
+            order by 3 asc
+          </non-end-item-select-db2>
+          <non-end-item-select-sqlserver>
+            select a.assetid, a.siteid, coalesce((select max(updatedtime) from plusaanbdistatus where assetid = a.assetid and siteid = a.siteid and inactivetime is null and currentconfig = 1), (getDate()-365)), a.tenantid
+            from asset a
+            where not exists (select 1 from synonymdomain where value=a.status and maxvalue in ('DECOMMISSIONED', 'NOT READY') and domainid='LOCASSETSTATUS')
+            and a.moved = 0
+            and a.plusacatid is not null
+            and a.parent is null
+            and a.plusamodelid is null
+            order by 3 asc
+          </non-end-item-select-sqlserver>
+          <service-monitor-select>
+            select a.plusaantranid, a.rowstamp, a.assetid, a.siteid, a.checkmode, a.tenantid
+            from plusaantran a
+            where a.priority > 0
+            and exists (select 1 from synonymdomain sd where sd.domainid='PLUSAANTRANSTATUS' and sd.maxvalue='PENDING' and sd.value=a.status)
+            order by a.plusaantranid
+          </service-monitor-select>
+          <cache-select>
+            select a.assetuid, a.assetid, a.siteid, a.tenantid
+            from asset a
+            where a.plusacatid is not null
+            order by a.assetuid
+          </cache-select>
+          <masterpm-select>
+            select %%1 from masterpm mpm
+            where mpm.plusaintaction is not null
+            and mpm.plusastatus in
+            (select sd.value from synonymdomain sd
+              where sd.domainid = 'PLUSAMASTERPMSTAT'
+              and sd.maxvalue = 'ACTIVE')
+          </masterpm-select>
+          </bdi-select>
+        aviationOptions: >-
+          ECP|MEL|SRC|FLB|OWO|OWT|OWJ|XPM|TSX|PME|SQP|OMP|MPM|W&B|SFT|SHL|WOL|MPC
+    customization: {}
+    customizationList: []
+    db:
+      dbSchema: MAXIMO
+      encryptionSecret: demo-manage-encryptionsecret
+      maxinst:
+        bypassUpgradeVersionCheck: false
+        db2Vargraphic: true
+        demodata: true
+        indexSpace: maxindex
+        tableSpace: maxdata
+    deployment:
+      buildTag: latest
+      ephemeralStorage:
+        adminBuild: 30Gi
+        serverBundleBuild: 30Gi
+      importedCerts: []
+      mode: up
+      persistentVolumes: []
+      serverBundles:
+        - bundleType: all
+          isDefault: true
+          isUserSyncTarget: true
+          name: all
+          replica: 1
+          routeSubDomain: all
+      serverTimezone: GMT
+      useMasSmtpcfg: true
+    languages:
+      baseLang: EN
+  version:
+    reconciled: ''
+  versions:
+    reconciled: 8.3.1
+
