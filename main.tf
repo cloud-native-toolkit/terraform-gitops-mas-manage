@@ -99,10 +99,10 @@ module "jdbc_config"{
 
     instanceid = var.instanceid
     workspace_id = var.workspace_id
-    db_user = var.database_username
-    db_password = var.database_password
-    db_cert = var.database_cert
-    db_url = var.database_url 
+    db_user = var.db_user
+    db_password = var.db_password
+    db_cert = var.db_cert
+    db_url = var.db_url
 }
 
 # Add values for charts
