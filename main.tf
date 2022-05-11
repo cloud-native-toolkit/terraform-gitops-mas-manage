@@ -3,13 +3,8 @@ locals {
   bin_dir        = module.setup_clis.bin_dir
   tmp_dir        = "${path.cwd}/.tmp/${local.name}"
   yaml_dir       = "${local.tmp_dir}/chart/${local.name}"
-  //secret_dir     = "${local.tmp_dir}/secrets"
-  //db_secret_name = "${var.instanceid}-jdbc-creds-wsapp-manage"
-  //jdbc_name      = "${var.instanceid}-jdbc-wsapp-${var.workspace_id}-${var.appid}"
   workspace_name = "${var.instanceid}-${var.workspace_id}"
-
-
-
+  
   layer              = "services"
   type               = "operators"
   application_branch = "main"

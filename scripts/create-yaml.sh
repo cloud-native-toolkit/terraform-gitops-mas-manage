@@ -12,13 +12,8 @@ mkdir -p "${DEST_DIR}"
 ## put the yaml resource content in DEST_DIR
 cp -R "${CHART_DIR}"/* "${DEST_DIR}"
 
-#if [[ -n "${VALUES_CONTENT}" ]]; then
-#  echo "${VALUES_CONTENT}" > "${DEST_DIR}/values.yaml"
-#fi
-#
-#cat >> "${DEST_DIR}/values.yaml" << EOL
-#
-#dbcert:
-#$(echo | awk -v ca_var="$DB_CERT" '{ printf ca_var; }' | sed 's/^/  /')
-#
-#EOL
+if [[ -n "${VALUES_CONTENT}" ]]; then
+  echo "${VALUES_CONTENT}" > "${DEST_DIR}/values.yaml"
+fi
+
+
