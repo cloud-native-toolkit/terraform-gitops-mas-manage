@@ -5,7 +5,5 @@ terraform {
     gitops = {
       source = "cloud-native-toolkit/gitops"
     }
-
   }
-
 }
