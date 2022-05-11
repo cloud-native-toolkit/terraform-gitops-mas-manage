@@ -4,7 +4,7 @@ locals {
   tmp_dir        = "${path.cwd}/.tmp/${local.name}"
   yaml_dir       = "${local.tmp_dir}/chart/${local.name}"
   workspace_name = "${var.instanceid}-${var.workspace_id}"
-  
+
   layer              = "services"
   type               = "operators"
   application_branch = "main"
@@ -102,21 +102,18 @@ module "jdbc_config"{
 
 # Add values for charts
 resource "null_resource" "deployAppVals" {
-  depends_on = [module.pullsecret, module.jdbc_config]
-
   provisioner "local-exec" {
     command = "${path.module}/scripts/create-yaml.sh '${local.name}' '${local.yaml_dir}'"
 
     environment = {
       VALUES_CONTENT = yamlencode(local.values_content)
-      DB_CERT = var.db_cert
     }
   }
 }
 
 # Deploy
 resource gitops_module masapp {
-  depends_on = [null_resource.deployAppVals, module.sbo]
+  depends_on = [null_resource.deployAppVals, module.sbo, module.jdbc_config, module.pullsecret]
 
   name        = local.name
   namespace   = local.namespace
