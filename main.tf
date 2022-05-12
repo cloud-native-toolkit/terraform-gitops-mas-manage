@@ -16,7 +16,6 @@ locals {
  
 # set values content for subscription
   values_content = {
-    subscriptions = {
         masapp = {
           name = local.appname
           appid = var.appid
@@ -24,17 +23,16 @@ locals {
           namespace = local.namespace
           core-namespace = local.core-namespace
           workspaceid = var.workspace_id
-          subscription = {
-            channel = var.channel
-            installPlanApproval = local.installPlan
-            source = var.catalog
-            sourceNamespace = var.catalog_namespace
-          }
+        }
+        subscription = {
+          channel = var.channel
+          installPlanApproval = local.installPlan
+          source = var.catalog
+          sourceNamespace = var.catalog_namespace
         }
         workspace = {
           name = local.workspace_name
         }
-      }
     }
 } 
 

@@ -1,11 +1,11 @@
 apiVersion: apps.mas.ibm.com/v1
 kind: ManageApp
 metadata:
-  name: {{ .Values.subscriptions.masapp.instanceid }}
-  namespace: {{ .Values.subscriptions.masapp.namespace }}
+  name: {{ .Values.masapp.instanceid }}
+  namespace: {{ .Values.masapp.namespace }}
   labels:
     mas.ibm.com/applicationId: manage
-    mas.ibm.com/instanceId: {{ .Values.subscriptions.masapp.instanceid }}
+    mas.ibm.com/instanceId: {{ .Values.masapp.instanceid }}
     {{- include "ibm-masapp-manage.labels" . | nindent 4 }}
   annotations:
     argocd.argoproj.io/sync-wave: "2" 
