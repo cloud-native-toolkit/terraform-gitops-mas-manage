@@ -13,8 +13,8 @@ module "gitops_module" {
   db_password = var.database_password
   db_cert = var.database_cert
   db_url = var.database_url 
-  db_schema = ""
-  db_secret = ""
+  db_schema = "maximo"
+  db_secret =var.database_cert
 
   
 }

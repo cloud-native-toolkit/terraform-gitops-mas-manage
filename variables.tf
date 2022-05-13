@@ -152,19 +152,13 @@ variable "db_url" {
 variable "db_schema" {
   type = string
   description = "database schema name"
+  default = "maximo"
   
 }
 
 variable "db_secret" {
   type = string
   description = "database credentials secrets"
-  
-}
-
-variable "db_schema" {
-  type = string
-  description = "database schema"
-  default = "maximo"
   
 }
 
