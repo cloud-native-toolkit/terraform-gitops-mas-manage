@@ -34,3 +34,9 @@ output "type" {
   value       = local.type
   depends_on  = [gitops_module.masapp]
 }
+
+output "appname" {
+  description = "The name of the mas app CR deployed"
+  value       = local.appname
+  depends_on  = [gitops_module.masapp]
+}

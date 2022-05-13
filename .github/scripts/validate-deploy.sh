@@ -25,6 +25,8 @@ SERVER_NAME=$(jq -r '.server_name // "default"' gitops-output.json)
 LAYER=$(jq -r '.layer_dir // "2-services"' gitops-output.json)
 TYPE=$(jq -r '.type // "base"' gitops-output.json)
 
+APPNAME=$(jq -r '.appname // "masdemo"' gitops-output.json)
+
 mkdir -p .testrepo
 
 git clone https://${GIT_TOKEN}@${GIT_REPO} .testrepo
@@ -72,7 +74,27 @@ if [[ $count -eq 20 ]]; then
   exit 1
 fi
 
-kubectl rollout status "deployment/ibm-mas-manage-operator" -n "${NAMESPACE}" || exit 1
+## workspace rollout
+kubectl rollout status "deployment/${APPNAME}-entitymgr-ws" -n "${NAMESPACE}" || exit 1
+
+count=0
+until kubectl get deployment ${APPNAME}-entitymgr-ws -n ${NAMESPACE} || [[ $count -eq 20 ]]; do
+  echo "Waiting for deployment/${APPNAME}-entitymgr-ws in ${NAMESPACE}"
+  count=$((count + 1))
+  sleep 60
+done
+
+if [[ $count -eq 20 ]]; then
+  echo "Timed out waiting for deployment/${APPNAME}-entitymgr-ws in ${NAMESPACE}"
+  kubectl get all -n "${NAMESPACE}"
+  exit 1
+fi
+
+kubectl rollout status "deployment/${APPNAME}-entitymgr-ws" -n "${NAMESPACE}" || exit 1
+
+## temporary pause in deployment if successful for additional checks
+## REMOVE THIS BEFORE MERGE
+sleep 15m
 
 cd ..
 rm -rf .testrepo

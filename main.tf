@@ -6,7 +6,7 @@ locals {
   workspace_name = "${var.instanceid}-${var.workspace_id}"
 
   layer              = "services"
-  type               = "operators"
+  type               = "base"
   application_branch = "main"
   appname            = "ibm-mas-${var.appid}"
   namespace          = "mas-${var.instanceid}-${var.appid}"
@@ -23,6 +23,7 @@ locals {
           namespace = local.namespace
           core-namespace = local.core-namespace
           workspaceid = var.workspace_id
+          demodata = var.demodata
         }
         subscription = {
           channel = var.channel
@@ -32,6 +33,7 @@ locals {
         }
         workspace = {
           name = local.workspace_name
+          dbschema = var.db_schema
         }
     }
 } 

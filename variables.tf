@@ -161,3 +161,17 @@ variable "db_secret" {
   
 }
 
+variable "db_schema" {
+  type = string
+  description = "database schema"
+  default = "maximo"
+  
+}
+
+variable "demodata" {
+  type = bool
+  description = "depoloy demo data for app"
+  default = false
+  
+}
+
