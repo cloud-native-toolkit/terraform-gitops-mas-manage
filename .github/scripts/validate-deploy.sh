@@ -75,8 +75,6 @@ if [[ $count -eq 20 ]]; then
 fi
 
 ## workspace rollout
-kubectl rollout status "deployment/${APPNAME}-entitymgr-ws" -n "${NAMESPACE}" || exit 1
-
 count=0
 until kubectl get deployment ${APPNAME}-entitymgr-ws -n ${NAMESPACE} || [[ $count -eq 20 ]]; do
   echo "Waiting for deployment/${APPNAME}-entitymgr-ws in ${NAMESPACE}"
@@ -90,11 +88,13 @@ if [[ $count -eq 20 ]]; then
   exit 1
 fi
 
-kubectl rollout status "deployment/${APPNAME}-entitymgr-ws" -n "${NAMESPACE}" || exit 1
+kubectl get deployments -n ${NAMESPACE}
 
 ## temporary pause in deployment if successful for additional checks
 ## REMOVE THIS BEFORE MERGE
 sleep 15m
+
+kubectl get deployments -n ${NAMESPACE}
 
 cd ..
 rm -rf .testrepo
