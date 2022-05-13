@@ -14,7 +14,7 @@ module "gitops_module" {
   db_cert = var.database_cert
   db_url = var.database_url 
   db_schema = "maximo"
-  db_secret =var.database_cert
+  demodata = true
 
   
 }

@@ -118,7 +118,6 @@ variable "appid" {
 variable "workspace_id" {
   type = string
   description = "MAS workspace id"
-  
 }
 
 variable "db_user" {
@@ -132,40 +131,29 @@ variable "db_password" {
   type = string
   sensitive = true
   description = "database connection password"
-  
 }
 
 variable "db_cert" {
   type = string
   sensitive = true
   description = "database connection public cert"
-  
 }
 
 variable "db_url" {
   type = string
   sensitive = true
   description = "database connection url"
-  
 } 
 
 variable "db_schema" {
   type = string
   description = "database schema name"
   default = "maximo"
-  
-}
-
-variable "db_secret" {
-  type = string
-  description = "database credentials secrets"
-  
 }
 
 variable "demodata" {
   type = bool
   description = "depoloy demo data for app"
   default = false
-  
 }
 

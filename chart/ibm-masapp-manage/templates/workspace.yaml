@@ -21,7 +21,11 @@ spec:
     db:
       dbSchema: "{{ .Values.workspace.dbschema }}"
       maxinst:
-        demodata: "{{ .Values.masapp.demodata }}"
+        {{- if .Values.masapp.demodata }}
+        demodata: true
+        {{- else }}
+        demodata: false
+        {{- end }}
         db2Vargraphic: true
         indexSpace: MAXINDEX
         tableSpace: MAXDATA
