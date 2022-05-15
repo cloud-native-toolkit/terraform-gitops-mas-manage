@@ -92,7 +92,7 @@ kubectl get deployments -n ${NAMESPACE}
 
 ## temporary pause in deployment if successful for additional checks
 ## REMOVE THIS BEFORE MERGE
-sleep 15m
+sleep 70m
 
 kubectl get deployments -n ${NAMESPACE}
 
