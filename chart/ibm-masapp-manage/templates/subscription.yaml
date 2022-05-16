@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "ibm-masapp-manage.labels" . | nindent 4 }}
   annotations:
-    argocd.argoproj.io/sync-wave: "1" 
+    argocd.argoproj.io/sync-wave: "-1" 
 spec:
   name: {{ .Values.masapp.name }}
   source: {{ .Values.subscription.source }}
