@@ -26,6 +26,7 @@ LAYER=$(jq -r '.layer_dir // "2-services"' gitops-output.json)
 TYPE=$(jq -r '.type // "base"' gitops-output.json)
 
 APPNAME=$(jq -r '.appname // "masdemo"' gitops-output.json)
+WSNAME=$(jq -r '.ws_name // "masdemo"' gitops-output.json)
 
 mkdir -p .testrepo
 
@@ -74,10 +75,11 @@ if [[ $count -eq 20 ]]; then
   exit 1
 fi
 
-## workspace rollout
+## workspace rollout INCREASE
+
 count=0
-until kubectl get deployment ${APPNAME}-entitymgr-ws -n ${NAMESPACE} || [[ $count -eq 50 ]]; do
-  echo "Waiting for deployment/${APPNAME}-entitymgr-ws in ${NAMESPACE}"
+until kubectl get deployment ${WSNAME}-entitymgr-ws -n ${NAMESPACE} || [[ $count -eq 50 ]]; do
+  echo "Waiting for deployment/${WSNAME}-entitymgr-ws in ${NAMESPACE}"
   count=$((count + 1))
   sleep 60
 done
@@ -92,7 +94,7 @@ kubectl get deployments -n ${NAMESPACE}
 
 ## temporary pause in deployment if successful for additional checks
 ## REMOVE THIS BEFORE MERGE
-sleep 70m
+sleep 260m
 
 kubectl get deployments -n ${NAMESPACE}
 

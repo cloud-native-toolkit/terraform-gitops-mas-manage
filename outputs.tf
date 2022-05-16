@@ -40,3 +40,9 @@ output "appname" {
   value       = local.appname
   depends_on  = [gitops_module.masapp]
 }
+
+output "wsname" {
+  description = "The name of the mas app workspace deployed"
+  value       = local.workspace_name
+  depends_on  = [gitops_module.masapp]
+}
