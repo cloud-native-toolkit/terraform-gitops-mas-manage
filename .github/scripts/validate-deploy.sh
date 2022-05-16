@@ -76,13 +76,13 @@ fi
 
 ## workspace rollout
 count=0
-until kubectl get deployment ${APPNAME}-entitymgr-ws -n ${NAMESPACE} || [[ $count -eq 20 ]]; do
+until kubectl get deployment ${APPNAME}-entitymgr-ws -n ${NAMESPACE} || [[ $count -eq 50 ]]; do
   echo "Waiting for deployment/${APPNAME}-entitymgr-ws in ${NAMESPACE}"
   count=$((count + 1))
   sleep 60
 done
 
-if [[ $count -eq 20 ]]; then
+if [[ $count -eq 50 ]]; then
   echo "Timed out waiting for deployment/${APPNAME}-entitymgr-ws in ${NAMESPACE}"
   kubectl get all -n "${NAMESPACE}"
   exit 1
