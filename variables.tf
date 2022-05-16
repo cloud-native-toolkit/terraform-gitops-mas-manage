@@ -157,22 +157,22 @@ variable "demodata" {
   default = false
 }
 
-variable "workspace_encrypt_provided" {
+variable "reuse_db" {
   type = bool
-  description = "ws encrypt secret credentials provided for reusing db already configured for mas-manage"
+  description = "true if you are re-using a previously configured db with manage - must provide db encryption keys if true"
   default = false
 }
 
 variable "ws_encrypt_id" {
   type = string
-  description = "id of ws encrypt secret - only valid if workspace_encrypt_provided true"
+  description = "required if reuse_db is true"
   default = ""
   sensitive = true
 }
 
 variable "ws_encrypt_pw" {
   type = string
-  description = "pw of ws encrypt secret - only valid if workspace_encrypt_provided true"
+  description = "required if reuse_db is true"
   default = ""
   sensitive = true
 }
