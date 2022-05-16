@@ -12,3 +12,4 @@ spec:
   sourceNamespace: {{ .Values.subscription.sourceNamespace }}
   channel: {{ .Values.subscription.channel }}
   installPlanApproval: {{ .Values.subscription.installPlanApproval }}
+
