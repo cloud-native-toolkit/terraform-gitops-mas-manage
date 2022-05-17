@@ -20,6 +20,9 @@ spec:
       install: true
     db:
       dbSchema: "{{ .Values.workspace.dbschema }}"
+      {{- if .Values.masapp.reuse_db }}
+      encryptionSecret: "{{ .Values.masapp.cr_secret_name }}"
+      {{- end }}
       maxinst:
         {{- if .Values.masapp.demodata }}
         demodata: true

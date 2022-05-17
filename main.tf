@@ -3,7 +3,9 @@ locals {
   bin_dir        = module.setup_clis.bin_dir
   tmp_dir        = "${path.cwd}/.tmp/${local.name}"
   yaml_dir       = "${local.tmp_dir}/chart/${local.name}"
+  secret_dir     = "${path.cwd}/.tmp/${local.namespace}/${local.name}/secrets"
   workspace_name = "${var.instanceid}-${var.workspace_id}"
+  cr_secret_name = "${var.workspace_id}-${var.appid}-encryptionsecret"
 
   layer              = "services"
   type               = "base"
@@ -24,6 +26,8 @@ locals {
           core-namespace = local.core-namespace
           workspaceid = var.workspace_id
           demodata = var.demodata
+          reuse_db = var.reuse_db
+          cr_secret_name = local.cr_secret_name
         }
         subscription = {
           channel = var.channel
@@ -70,7 +74,30 @@ module "pullsecret" {
   docker_username = "cp"
   docker_password = var.entitlement_key
   secret_name = "ibm-entitlement"
-} 
+}
+
+# If reusing database then need to create secret for encryption keys
+resource null_resource create_secret {
+  count = var.reuse_db ? 1 : 0
+
+  provisioner "local-exec" {
+    command = "${path.module}/scripts/create-secret.sh '${local.namespace}' '${var.crypto_key}' '${var.cryptox_key}' '${local.cr_secret_name}' '${local.secret_dir}' '${local.name}-password'"
+  }
+}
+
+module seal_secrets {
+  count = var.reuse_db ? 1 : 0
+  depends_on = [null_resource.create_secret]
+
+  source = "github.com/cloud-native-toolkit/terraform-util-seal-secrets.git"
+
+  source_dir    = local.secret_dir
+  dest_dir      = local.yaml_dir
+  kubeseal_cert = var.kubeseal_cert
+  label         = local.name
+}
+
+
 
 # Add SBO module
 module "sbo" {

@@ -65,20 +65,19 @@ else
 fi
 
 count=0
-until kubectl get deployment ibm-mas-manage-operator -n ${NAMESPACE} || [[ $count -eq 20 ]]; do
+until kubectl get deployment ibm-mas-manage-operator -n ${NAMESPACE} || [[ $count -eq 30 ]]; do
   echo "Waiting for deployment/ibm-mas-manage-operator in ${NAMESPACE}"
   count=$((count + 1))
   sleep 60
 done
 
-if [[ $count -eq 20 ]]; then
+if [[ $count -eq 30 ]]; then
   echo "Timed out waiting for deployment/ibm-mas-manage-operator in ${NAMESPACE}"
   kubectl get all -n "${NAMESPACE}"
   exit 1
 fi
 
-## workspace rollout INCREASE
-
+## workspace rollout 
 count=0
 until kubectl get deployment ${INSTNAME}-entitymgr-ws -n ${NAMESPACE} || [[ $count -eq 50 ]]; do
   echo "Waiting for deployment/${INSTNAME}-entitymgr-ws in ${NAMESPACE}"
@@ -94,7 +93,7 @@ fi
 
 kubectl get deployments -n ${NAMESPACE}
 
-## maxinst deployment must succeed or nothing will work
+## maxinst deployment must succeed or nothing will work - this can take up to 4.5hrs if demo data is deployed too
 count=0
 until kubectl get deployment ${INSTNAME}-${WSNAME}-manage-maxinst -n ${NAMESPACE} || [[ $count -eq 200 ]]; do
   echo "Waiting for deployment/${INSTNAME}-${WSNAME}-manage-maxinst in ${NAMESPACE}"
