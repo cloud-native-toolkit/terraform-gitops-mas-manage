@@ -163,14 +163,14 @@ variable "reuse_db" {
   default = false
 }
 
-variable "ws_encrypt_id" {
+variable "crypto_key" {
   type = string
   description = "required if reuse_db is true"
   default = ""
   sensitive = true
 }
 
-variable "ws_encrypt_pw" {
+variable "cryptox_key" {
   type = string
   description = "required if reuse_db is true"
   default = ""

@@ -90,4 +90,12 @@ variable "database_url" {
 
 variable "database_cert" {
   type = string
-} 
+}
+
+variable "database_crypto_key" {
+  type = string
+}
+
+variable "database_cryptox_key" {
+  type = string
+}

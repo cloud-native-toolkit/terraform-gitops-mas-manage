@@ -25,8 +25,10 @@ SERVER_NAME=$(jq -r '.server_name // "default"' gitops-output.json)
 LAYER=$(jq -r '.layer_dir // "2-services"' gitops-output.json)
 TYPE=$(jq -r '.type // "base"' gitops-output.json)
 
-APPNAME=$(jq -r '.appname // "masdemo"' gitops-output.json)
-WSNAME=$(jq -r '.ws_name // "masdemo"' gitops-output.json)
+APPNAME=$(jq -r '.appname // "manage"' gitops-output.json)
+WSNAME=$(jq -r '.ws_name // "demo"' gitops-output.json)
+INSTNAME=$(jq -r '.inst_name // "masdemo"' gitops-output.json)
+
 
 mkdir -p .testrepo
 
@@ -78,8 +80,8 @@ fi
 ## workspace rollout INCREASE
 
 count=0
-until kubectl get deployment ${WSNAME}-entitymgr-ws -n ${NAMESPACE} || [[ $count -eq 50 ]]; do
-  echo "Waiting for deployment/${WSNAME}-entitymgr-ws in ${NAMESPACE}"
+until kubectl get deployment ${INSTNAME}-entitymgr-ws -n ${NAMESPACE} || [[ $count -eq 50 ]]; do
+  echo "Waiting for deployment/${INSTNAME}-entitymgr-ws in ${NAMESPACE}"
   count=$((count + 1))
   sleep 60
 done
@@ -92,9 +94,20 @@ fi
 
 kubectl get deployments -n ${NAMESPACE}
 
-## temporary pause in deployment if successful for additional checks
-## REMOVE THIS BEFORE MERGE
-sleep 260m
+## maxinst deployment must succeed or nothing will work
+count=0
+until kubectl get deployment ${INSTNAME}-${WSNAME}-manage-maxinst -n ${NAMESPACE} || [[ $count -eq 200 ]]; do
+  echo "Waiting for deployment/${INSTNAME}-${WSNAME}-manage-maxinst in ${NAMESPACE}"
+  count=$((count + 1))
+  sleep 1m
+done
+
+if [[ $count -eq 200 ]]; then
+  echo "Timed out waiting for deployment/${INSTNAME}-${WSNAME}-manage-maxinst in ${NAMESPACE}"
+  kubectl get all -n "${NAMESPACE}"
+  exit 1
+fi
+
 
 kubectl get deployments -n ${NAMESPACE}
 

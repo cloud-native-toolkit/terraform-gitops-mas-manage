@@ -46,3 +46,10 @@ output "wsname" {
   value       = local.workspace_name
   depends_on  = [gitops_module.masapp]
 }
+
+output "instname" {
+  description = "The name of the mas instance deployed"
+  value       = var.instanceid
+  depends_on  = [gitops_module.masapp]
+}
+

@@ -36,6 +36,11 @@ on:
         required: true
       DATABASE_URL:
         required: true
+      CRYPTO_KEY:
+        required: true
+      CRYPTOX_KEY:
+        required: true
+
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -106,6 +111,8 @@ jobs:
           TF_VAR_database_password: ${{ secrets.DATABASE_PASSWORD }}
           TF_VAR_database_cert: ${{ secrets.DATABASE_CERT }}
           TF_VAR_database_url: ${{ secrets.DATABASE_URL }}
+          TF_VAR_database_crypto_key: ${{ secrets.CRYPTO_KEY }}
+          TF_VAR_database_cryptox_key: ${{ secrets.CRYPTOX_KEY }}
 
       - name: Verify destroy on ${{ matrix.testcase }}
         uses: cloud-native-toolkit/action-module-verify-destroy@main
@@ -126,3 +133,5 @@ jobs:
           TF_VAR_database_password: ${{ secrets.DATABASE_PASSWORD }}
           TF_VAR_database_cert: ${{ secrets.DATABASE_CERT }}
           TF_VAR_database_url: ${{ secrets.DATABASE_URL }}
+          TF_VAR_database_crypto_key: ${{ secrets.CRYPTO_KEY }}
+          TF_VAR_database_cryptox_key: ${{ secrets.CRYPTOX_KEY }}
