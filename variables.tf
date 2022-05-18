@@ -63,11 +63,6 @@ variable "git_credentials" {
   sensitive   = true
 }
 
-variable "namespace" {
-  type        = string
-  description = "The namespace where the application should be deployed"
-}
-
 variable "kubeseal_cert" {
   type        = string
   description = "The certificate/public key used to encrypt the sealed secrets"
@@ -78,4 +73,106 @@ variable "server_name" {
   type        = string
   description = "The name of the server"
   default     = "default"
+}
+
+variable "channel" {
+  type        = string
+  description = "Subscription channel"
+  default     = "8.x"
+}
+
+variable "installPlan" {
+  type        = string
+  description = "Install Plan for App"
+  default     = "Automatic"
+}
+
+variable "catalog" {
+  type        = string
+  description = "App catalog source"
+  default     = "ibm-operator-catalog"
+}
+
+variable "catalog_namespace" {
+  type        = string
+  description = "Catalog source namespace"
+  default     = "openshift-marketplace"
+}
+
+variable "instanceid" {
+  type        = string
+  description = "instance name for MAS - for example: masdemo or mas8 "
+}
+
+variable "entitlement_key" {
+  type        = string
+  description = "IBM entitlement key for MAS"
+}
+
+variable "appid" {
+  type        = string
+  description = "MAS AppID to deploy.  Expects: manage"
+  default     = "manage"
+}
+
+variable "workspace_id" {
+  type = string
+  description = "MAS workspace id"
+}
+
+variable "db_user" {
+  type = string
+  sensitive = true
+  description = "database connection username"
+
+}
+
+variable "db_password" {
+  type = string
+  sensitive = true
+  description = "database connection password"
+}
+
+variable "db_cert" {
+  type = string
+  sensitive = true
+  description = "database connection public cert"
+}
+
+variable "db_url" {
+  type = string
+  sensitive = true
+  description = "database connection url"
+} 
+
+variable "db_schema" {
+  type = string
+  description = "database schema name"
+  default = "maximo"
+}
+
+variable "demodata" {
+  type = bool
+  description = "depoloy demo data for app"
+  default = false
+}
+
+variable "reuse_db" {
+  type = bool
+  description = "true if you are re-using a previously configured db with manage - must provide db encryption keys if true"
+  default = false
+}
+
+variable "crypto_key" {
+  type = string
+  description = "required if reuse_db is true"
+  default = ""
+  sensitive = true
+}
+
+variable "cryptox_key" {
+  type = string
+  description = "required if reuse_db is true"
+  default = ""
+  sensitive = true
 }

@@ -59,7 +59,7 @@ variable "git_org" {
 }
 
 variable "git_repo" {
-  default = "git-module-test"
+  default = "git-module-mas-app"
 }
 
 variable "gitops_namespace" {
@@ -74,4 +74,28 @@ variable "kubeseal_namespace" {
 }
 
 variable "cp_entitlement_key" {
+}
+
+variable "database_username" {
+  type = string
+}
+
+variable "database_password" {
+  type = string
+}
+
+variable "database_url" {
+  type = string
+}
+
+variable "database_cert" {
+  type = string
+}
+
+variable "database_crypto_key" {
+  type = string
+}
+
+variable "database_cryptox_key" {
+  type = string
 }
