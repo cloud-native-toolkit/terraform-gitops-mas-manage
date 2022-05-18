@@ -17,3 +17,4 @@ kubectl create secret generic "${SECRET_NAME}" \
   --from-literal="MXE_SECURITY_OLD_CRYPTOX_KEY=${CRYPTOX_KEY}" \
   --dry-run=client \
   --output=yaml > "${DEST_DIR}/${PWD_SECRET_NAME}.yaml"
+
