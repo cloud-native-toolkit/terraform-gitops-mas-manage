@@ -13,5 +13,7 @@ kubectl create secret generic "${SECRET_NAME}" \
   -n "${NAMESPACE}" \
   --from-literal="MXE_SECURITY_CRYPTO_KEY=${CRYPTO_KEY}" \
   --from-literal="MXE_SECURITY_CRYPTOX_KEY=${CRYPTOX_KEY}" \
+  --from-literal="MXE_SECURITY_OLD_CRYPTO_KEY=${CRYPTO_KEY}" \
+  --from-literal="MXE_SECURITY_OLD_CRYPTOX_KEY=${CRYPTOX_KEY}" \
   --dry-run=client \
   --output=yaml > "${DEST_DIR}/${PWD_SECRET_NAME}.yaml"

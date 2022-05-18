@@ -95,20 +95,40 @@ kubectl get deployments -n ${NAMESPACE}
 
 ## maxinst deployment must succeed or nothing will work - this can take up to 4.5hrs if demo data is deployed too
 count=0
-until kubectl get deployment ${INSTNAME}-${WSNAME}-manage-maxinst -n ${NAMESPACE} || [[ $count -eq 200 ]]; do
-  echo "Waiting for deployment/${INSTNAME}-${WSNAME}-manage-maxinst in ${NAMESPACE}"
+until kubectl get deployment ${WSNAME}-manage-maxinst -n ${NAMESPACE} || [[ $count -eq 200 ]]; do
+  echo "Waiting for deployment/${WSNAME}-manage-maxinst in ${NAMESPACE}"
   count=$((count + 1))
   sleep 1m
 done
 
 if [[ $count -eq 200 ]]; then
-  echo "Timed out waiting for deployment/${INSTNAME}-${WSNAME}-manage-maxinst in ${NAMESPACE}"
+  echo "Timed out waiting for deployment/${WSNAME}-manage-maxinst in ${NAMESPACE}"
   kubectl get all -n "${NAMESPACE}"
   exit 1
 fi
 
 
 kubectl get deployments -n ${NAMESPACE}
+
+## last test for all deploy
+count=0
+until kubectl get deployment ${WSNAME}-all -n ${NAMESPACE} || [[ $count -eq 200 ]]; do
+  echo "Waiting for deployment/${WSNAME}-all in ${NAMESPACE}"
+  count=$((count + 1))
+  sleep 1m
+done
+
+if [[ $count -eq 200 ]]; then
+  echo "Timed out waiting for deployment/${WSNAME}-all in ${NAMESPACE}"
+  kubectl get all -n "${NAMESPACE}"
+  exit 1
+fi
+
+
+kubectl get deployments -n ${NAMESPACE}
+
+
+
 
 cd ..
 rm -rf .testrepo
