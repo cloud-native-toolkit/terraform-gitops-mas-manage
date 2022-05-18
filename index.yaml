@@ -1,8 +1,189 @@
 name: gitops-mas-manage
 type: gitops
-description: Module to populate a gitops repo with the resources to provision mas-manage
+description: >-
+  Module to populate a gitops repo with the resources to provision
+  Maximo-Applications
 tags:
   - tools
   - gitops
-versions: []
+versions:
+  - platforms:
+      - ocp4
+    dependencies:
+      - id: gitops
+        refs:
+          - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
+            version: '>= 1.1.0'
+    variables:
+      - name: gitops_config
+        type: |-
+          object({
+              boostrap = object({
+                argocd-config = object({
+                  project = string
+                  repo = string
+                  url = string
+                  path = string
+                })
+              })
+              infrastructure = object({
+                argocd-config = object({
+                  project = string
+                  repo = string
+                  url = string
+                  path = string
+                })
+                payload = object({
+                  repo = string
+                  url = string
+                  path = string
+                })
+              })
+              services = object({
+                argocd-config = object({
+                  project = string
+                  repo = string
+                  url = string
+                  path = string
+                })
+                payload = object({
+                  repo = string
+                  url = string
+                  path = string
+                })
+              })
+              applications = object({
+                argocd-config = object({
+                  project = string
+                  repo = string
+                  url = string
+                  path = string
+                })
+                payload = object({
+                  repo = string
+                  url = string
+                  path = string
+                })
+              })
+            })
+        description: Config information regarding the gitops repo structure
+        moduleRef:
+          id: gitops
+          output: gitops_config
+      - name: git_credentials
+        type: |-
+          list(object({
+              repo = string
+              url = string
+              username = string
+              token = string
+            }))
+        description: The credentials for the gitops repo(s)
+        sensitive: true
+        moduleRef:
+          id: gitops
+          output: git_credentials
+      - name: kubeseal_cert
+        type: string
+        description: The certificate/public key used to encrypt the sealed secrets
+        default: ''
+        moduleRef:
+          id: gitops
+          output: sealed_secrets_cert
+      - name: server_name
+        type: string
+        description: The name of the server
+        default: default
+        moduleRef:
+          id: gitops
+          output: server_name
+      - name: channel
+        type: string
+        description: Subscription channel
+        default: 8.x
+      - name: installPlan
+        type: string
+        description: Install Plan for App
+        default: Automatic
+      - name: catalog
+        type: string
+        description: App catalog source
+        default: ibm-operator-catalog
+      - name: catalog_namespace
+        type: string
+        description: Catalog source namespace
+        default: openshift-marketplace
+      - name: instanceid
+        type: string
+        description: 'instance name for MAS - for example: masdemo or mas8 '
+      - name: entitlement_key
+        type: string
+        description: IBM entitlement key for MAS
+      - name: appid
+        type: string
+        description: 'MAS AppID to deploy.  Expects: manage'
+        default: manage
+      - name: workspace_id
+        type: string
+        description: MAS workspace id
+      - name: db_user
+        type: string
+        sensitive: true
+        description: database connection username
+      - name: db_password
+        type: string
+        sensitive: true
+        description: database connection password
+      - name: db_cert
+        type: string
+        sensitive: true
+        description: database connection public cert
+      - name: db_url
+        type: string
+        sensitive: true
+        description: database connection url
+      - name: db_schema
+        type: string
+        description: database schema name
+        default: maximo
+      - name: demodata
+        type: bool
+        description: depoloy demo data for app
+        default: false
+      - name: reuse_db
+        type: bool
+        description: >-
+          true if you are re-using a previously configured db with manage - must
+          provide db encryption keys if true
+        default: false
+      - name: crypto_key
+        type: string
+        description: required if reuse_db is true
+        default: ''
+        sensitive: true
+      - name: cryptox_key
+        type: string
+        description: required if reuse_db is true
+        default: ''
+        sensitive: true
+    version: v1.0.0
+    outputs:
+      - name: name
+        description: The name of the module
+      - name: branch
+        description: The branch where the module config has been placed
+      - name: namespace
+        description: The namespace where the module will be deployed
+      - name: server_name
+        description: The server where the module will be deployed
+      - name: layer
+        description: The layer where the module is deployed
+      - name: type
+        description: The type of module where the module is deployed
+      - name: appname
+        description: The name of the mas app CR deployed
+      - name: wsname
+        description: The name of the mas app workspace deployed
+      - name: instname
+        description: The name of the mas instance deployed
 id: github.com/cloud-native-toolkit/terraform-gitops-mas-manage
