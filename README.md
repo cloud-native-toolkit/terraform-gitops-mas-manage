@@ -1,13 +1,36 @@
-#  Maximo Application Suite - MAS Application Gitops terraform module
-![Verify and release module](https://github.com/cloud-native-toolkit/terraform-gitops-mas-manage/workflows/Verify%20and%20release%20module/badge.svg)
+#  Maximo Application Suite - MAS Manage Application Gitops terraform module
 
-Deploys the MAS applications as part of Maximo Application Suite via gitops.  To run, download the BOM (Bill of Materials) from the module catalog and build the terraform from there.  Specify the MAS-Core instance id - in the `instanceid` variable.  This will create a namespace of the name "mas-(instanceid)-(appid)".
+
+Deploys MAS Manage applications as part of Maximo Application Suite via gitops.  To run, download the BOM (Bill of Materials) from the module catalog and build the terraform from there.  Specify the MAS-Core instance id - in the `instanceid` variable.  This will create a namespace of the name "mas-(instanceid)-(appid)".
 
 Note if your cluster is not setup for gitops, download the gitops bootstrap BOM from the module catalog first to setup the gitops tooling.
 
+## Supported Manage Industry Add-on solutions
+This module currently supports installing the following Industry add-ons with MAS Manage:
+- Health
+- Civil Infrastructure
+
+Override the `industry_addons` variable such that it looks like the following to deploy health with Manage: 
+
+`industry_addons = ["health"]`
+
+To deploy Civil Infrastructure use:
+
+`industry_addons = ["civil"]`
+
+The other industry solutions follow the same format and are comma separated if more than one is needed.  Note be sure to check MAS requirements as not all industry solutions can be deployed together.
+
+## Database re-use
+You can reuse an existing Manage database by setting:   `reuse_db = true`  when calling the module.  If you are re-using the database then you must supply the `crypto` and `cryptox` keys from the previous install of Manage that encrypted the database or this new Manage install will fail when trying to access the database.
+
+```
+  crypto_key = var.database_crypto_key
+  cryptox_key = var.database_cryptox_key
+```
+
 ## Supported platforms
 
-- OCP 4.6+
+- OCP 4.8+
 
 ## Suggested companion modules
 
@@ -37,6 +60,8 @@ module "mas_manage" {
   entitlement_key = module.catalog.entitlement_key
   instanceid = "mas8"
   appid = "manage"
+  workspace_id = "demo"
+  demodata = false
 
 }
 ```

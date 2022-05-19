@@ -129,8 +129,13 @@ module "jdbc_config"{
 
 # Add values for charts
 resource "null_resource" "deployAppVals" {
+
+  triggers = {
+    addons = join(",", var.industry_addons)
+  }
+
   provisioner "local-exec" {
-    command = "${path.module}/scripts/create-yaml.sh '${local.name}' '${local.yaml_dir}'"
+    command = "${path.module}/scripts/create-yaml.sh '${local.name}' '${local.yaml_dir}' '${self.triggers.addons}'"
 
     environment = {
       VALUES_CONTENT = yamlencode(local.values_content)

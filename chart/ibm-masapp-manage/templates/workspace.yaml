@@ -15,6 +15,10 @@ spec:
   components:
     base:
       version: latest
+{{- range .Values.addons }}
+{{ . | nindent 4 }}:
+      version: latest
+{{ end }}
   settings:
     aio:
       install: true
