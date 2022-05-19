@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 
+SCRIPT_DIR=$(cd $(dirname "$0"); pwd -P)
+
+source "${SCRIPT_DIR}/validation-functions.sh"
+
 GIT_REPO=$(cat git_repo)
 GIT_TOKEN=$(cat git_token)
 
-#BIN_DIR=$(cat .bin_dir)
+BIN_DIR=$(cat .bin_dir)
 
 export PATH="${BIN_DIR}:${PATH}"
 
@@ -38,31 +42,13 @@ cd .testrepo || exit 1
 
 find . -name "*"
 
-if [[ ! -f "argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml" ]]; then
-  echo "ArgoCD config missing - argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml"
-  exit 1
-fi
+validate_gitops_content "${NAMESPACE}" "${LAYER}" "${SERVER_NAME}" "${TYPE}" "${COMPONENT_NAME}" "values.yaml"
 
-echo "Printing argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml"
-cat "argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml"
+check_k8s_namespace "${NAMESPACE}"
 
-echo "Printing payload/${LAYER}/namespace/${NAMESPACE}/${COMPONENT_NAME}/values.yaml"
-cat "payload/${LAYER}/namespace/${NAMESPACE}/${COMPONENT_NAME}/values.yaml"
-
-count=0
-until kubectl get namespace "${NAMESPACE}" 1> /dev/null 2> /dev/null || [[ $count -eq 20 ]]; do
-  echo "Waiting for namespace: ${NAMESPACE}"
-  count=$((count + 1))
-  sleep 15
-done
-
-if [[ $count -eq 20 ]]; then
-  echo "Timed out waiting for namespace: ${NAMESPACE}"
-  exit 1
-else
-  echo "Found namespace: ${NAMESPACE}. Sleeping for 30 seconds to wait for everything to settle down"
-  sleep 30
-fi
+check_k8s_resource "${NAMESPACE}" deployment ibm-mas-manage-operator
+check_k8s_resource "${NAMESPACE}" deployment "${INSTNAME}-entitymgr-ws"
+check_k8s_resource "${NAMESPACE}" deployment "${INSTNAME}-${WSNAME}-manage-maxinst"
 
 count=0
 until kubectl get deployment ibm-mas-manage-operator -n ${NAMESPACE} || [[ $count -eq 30 ]]; do
