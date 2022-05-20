@@ -21,7 +21,7 @@ spec:
 {{ end }}
   settings:
     aio:
-      install: true
+      install: false
     db:
       dbSchema: "{{ .Values.workspace.dbschema }}"
       {{- if .Values.masapp.reuse_db }}
