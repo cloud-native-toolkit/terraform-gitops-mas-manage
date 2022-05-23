@@ -131,7 +131,7 @@ module "jdbc_config"{
 resource "null_resource" "deployAppVals" {
 
   triggers = {
-    addons = join(",", var.industry_addons)
+    addons = join(",", var.addons)
   }
 
   provisioner "local-exec" {

@@ -177,8 +177,8 @@ variable "cryptox_key" {
   sensitive = true
 }
 
-variable "industry_addons" {
-  description = "comma separated list of quoted Manage app addons to deploy along with Manage. Valid addons: health, civil"
+variable "addons" { 
+  description = "comma separated list of quoted Manage app addons to deploy along with Manage. Current valid addons: health, civil"
   type        = list(string)
-  default     = [""]
+  default     = []
 }
