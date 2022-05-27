@@ -13,7 +13,7 @@ jobs:
     #uses: cloud-native-toolkit/action-workflows/.github/workflows/verify-gitops-module.yaml@v1
     uses: ./.github/workflows/verify-workflow.yaml
     with:
-      testcase: ocp4_latest_gitops_maximo
+      testcase: ocp4_latest_gitops_maximo_manage
     secrets:
       GIT_ORG: ${{ secrets.GIT_ORG }}
       AWS_CLUSTER_USERNAME: ${{ secrets.AWS_CLUSTER_USERNAME }}

@@ -18,7 +18,7 @@ module "gitops_module" {
   crypto_key = var.database_crypto_key
   cryptox_key = var.database_cryptox_key
   reuse_db = true
-  addons = ["health"]
+  //addons = ["health"] //add to deploy health
   
 }
 

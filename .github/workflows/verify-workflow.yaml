@@ -8,7 +8,7 @@ on:
       testcase:
         required: true
         type: string
-        default: ocp4_latest_gitops_maximo
+        default: ocp4_latest_gitops_maximo_manage
       skipDestroy:
         required: false
         type: string
