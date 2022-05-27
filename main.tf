@@ -1,8 +1,10 @@
 locals {
   name           = "ibm-masapp-manage"
+  operator_name  = "ibm-masapp-manage-operator"
   bin_dir        = module.setup_clis.bin_dir
   tmp_dir        = "${path.cwd}/.tmp/${local.name}"
   yaml_dir       = "${local.tmp_dir}/chart/${local.name}"
+  operator_yaml_dir = "${local.tmp_dir}/chart/${local.operator_name}"
   secret_dir     = "${path.cwd}/.tmp/${local.namespace}/${local.name}/secrets"
   workspace_name = "${var.instanceid}-${var.workspace_id}"
   cr_secret_name = "${var.workspace_id}-${var.appid}-encryptionsecret"
