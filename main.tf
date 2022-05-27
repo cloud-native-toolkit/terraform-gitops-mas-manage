@@ -1,14 +1,17 @@
 locals {
   name           = "ibm-masapp-manage"
+  operator_name  = "ibm-masapp-manage-operator"
   bin_dir        = module.setup_clis.bin_dir
   tmp_dir        = "${path.cwd}/.tmp/${local.name}"
   yaml_dir       = "${local.tmp_dir}/chart/${local.name}"
-  secret_dir     = "${path.cwd}/.tmp/${local.namespace}/${local.name}/secrets"
-  workspace_name = "${var.instanceid}-${var.workspace_id}"
-  cr_secret_name = "${var.workspace_id}-${var.appid}-encryptionsecret"
+  operator_yaml_dir = "${local.tmp_dir}/chart/${local.operator_name}"
+  secret_dir        = "${path.cwd}/.tmp/${local.namespace}/${local.name}/secrets"
+  workspace_name    = "${var.instanceid}-${var.workspace_id}"
+  cr_secret_name    = "${var.workspace_id}-${var.appid}-encryptionsecret"
 
   layer              = "services"
-  type               = "base"
+  type               = "instances"
+  operator_type      = "operators"
   application_branch = "main"
   appname            = "ibm-mas-${var.appid}"
   namespace          = "mas-${var.instanceid}-${var.appid}"
@@ -29,17 +32,23 @@ locals {
           reuse_db = var.reuse_db
           cr_secret_name = local.cr_secret_name
         }
+        workspace = {
+          name = local.workspace_name
+          dbschema = var.db_schema
+        }
+    }
+  values_content_operator = {
+        masapp = {
+          name = local.appname
+        }
         subscription = {
           channel = var.channel
           installPlanApproval = local.installPlan
           source = var.catalog
           sourceNamespace = var.catalog_namespace
         }
-        workspace = {
-          name = local.workspace_name
-          dbschema = var.db_schema
-        }
     }
+
 } 
 
 module setup_clis {
@@ -92,9 +101,9 @@ module seal_secrets {
   source = "github.com/cloud-native-toolkit/terraform-util-seal-secrets.git"
 
   source_dir    = local.secret_dir
-  dest_dir      = "${local.yaml_dir}/templates"
+  dest_dir      = "${local.operator_yaml_dir}/templates"
   kubeseal_cert = var.kubeseal_cert
-  label         = local.name
+  label         = local.operator_name
 }
 
 
@@ -127,10 +136,29 @@ module "jdbc_config"{
     db_url = var.db_url
 }
 
-# Add values for charts
-resource "null_resource" "deployAppVals" {
+
+# Add values for operator chart
+resource "null_resource" "deployAppValsOperator" {
+
   provisioner "local-exec" {
-    command = "${path.module}/scripts/create-yaml.sh '${local.name}' '${local.yaml_dir}'"
+    command = "${path.module}/scripts/create-operator-yaml.sh '${local.operator_name}' '${local.operator_yaml_dir}'"
+
+    environment = {
+      VALUES_CONTENT = yamlencode(local.values_content_operator)
+    }
+  }
+}
+
+
+# Add values for instance charts
+resource "null_resource" "deployAppVals" {
+
+  triggers = {
+    addons = join(",", var.addons)
+  }
+
+  provisioner "local-exec" {
+    command = "${path.module}/scripts/create-yaml.sh '${local.name}' '${local.yaml_dir}' '${self.triggers.addons}'"
 
     environment = {
       VALUES_CONTENT = yamlencode(local.values_content)
@@ -138,9 +166,24 @@ resource "null_resource" "deployAppVals" {
   }
 }
 
-# Deploy
+# Deploy Operator
+resource gitops_module masapp_operator {
+  depends_on = [null_resource.deployAppValsOperator, module.sbo, module.jdbc_config, module.pullsecret]
+
+  name        = local.operator_name
+  namespace   = local.namespace
+  content_dir = local.operator_yaml_dir
+  server_name = var.server_name
+  layer       = local.layer
+  type        = local.operator_type
+  branch      = local.application_branch
+  config      = yamlencode(var.gitops_config)
+  credentials = yamlencode(var.git_credentials)
+}
+
+# Deploy Instance
 resource gitops_module masapp {
-  depends_on = [null_resource.deployAppVals, module.sbo, module.jdbc_config, module.pullsecret]
+  depends_on = [gitops_module.masapp_operator]
 
   name        = local.name
   namespace   = local.namespace

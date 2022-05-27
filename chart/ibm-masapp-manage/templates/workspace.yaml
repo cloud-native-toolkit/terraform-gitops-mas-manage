@@ -15,9 +15,13 @@ spec:
   components:
     base:
       version: latest
+{{- range .Values.addons }}
+{{ . | nindent 4 }}:
+      version: latest
+{{ end }}
   settings:
     aio:
-      install: true
+      install: false
     db:
       dbSchema: "{{ .Values.workspace.dbschema }}"
       {{- if .Values.masapp.reuse_db }}

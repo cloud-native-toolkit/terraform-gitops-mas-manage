@@ -176,3 +176,9 @@ variable "cryptox_key" {
   default = ""
   sensitive = true
 }
+
+variable "addons" { 
+  description = "comma separated list of quoted Manage app addons to deploy along with Manage. Current valid addons: health, civil"
+  type        = list(string)
+  default     = []
+}

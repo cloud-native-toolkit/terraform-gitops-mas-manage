@@ -3,7 +3,7 @@ kind: Subscription
 metadata:
   name: {{ .Values.masapp.name }}
   labels:
-    {{- include "ibm-masapp-manage.labels" . | nindent 4 }}
+    {{- include "ibm-masapp-manage-operator.labels" . | nindent 4 }}
   annotations:
     argocd.argoproj.io/sync-wave: "-1" 
 spec:
