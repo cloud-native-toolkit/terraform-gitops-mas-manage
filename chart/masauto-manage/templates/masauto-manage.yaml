@@ -1,0 +1,30 @@
+# Add Manage latest application to an existing MAS Core 8.8.x installation
+#
+# Dependencies:
+# - Core
+#
+apiVersion: masauto.ibm.com/v1alpha1
+kind: Manage
+metadata:
+  name: masauto-manage
+annotations:
+  ansible.operator-sdk/reconcile-period: "0s"
+  argocd.argoproj.io/sync-wave: "5"
+spec:
+  ibm_entitlement_secret: {{ required "ibm_entitlement_secret value is required" .Values.ibm_entitlement_secret }}
+  mas_instance_id: {{ required "mas_instance_id value is required" .Values.mas_instance_id }}
+  mas_workspace_id: {{ required "mas_workspace_id value is required" .Values.mas_workspace_id }}
+  db2_instance_name: {{ .Values.db2_instance_name | default "db2w-manage" }}
+  mas_app_id: manage
+  mas_app_channel: {{ .Values.mas_app_channel | default "8.4.x" }}
+  db2_dbname: {{ .Values.db2_dbname | default "MANAGE" }}
+  mas_config_scope: {{ .Values.mas_config_scope | default "wsapp" }}  # recommend keeping db for manage at workspace-application scope by default
+  mas_appws_jdbc_binding: {{ .Values.mas_appws_jdbc_binding | default "workspace-application" }}
+  db2_meta_storage_class: {{ required "db2_meta_storage_class value is required" .Values.db2_meta_storage_class }}
+  db2_data_storage_class: {{ required "db2_data_storage_class value is required" .Values.db2_data_storage_class }}
+  mas_app_settings_demodata: {{ .Values.mas_app_settings_demodata | default "false" }}
+  mas_appws_components:
+    base:
+      version: latest
+    health:
+      version: latest

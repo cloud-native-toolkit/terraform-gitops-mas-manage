@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "ibm-masapp-manage-operator.name" -}}
+{{- define "masauto-manage.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "ibm-masapp-manage-operator.fullname" -}}
+{{- define "masauto-manage.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "ibm-masapp-manage-operator.chart" -}}
+{{- define "masauto-manage.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "ibm-masapp-manage-operator.labels" -}}
-helm.sh/chart: {{ include "ibm-masapp-manage-operator.chart" . }}
-{{ include "ibm-masapp-manage-operator.selectorLabels" . }}
+{{- define "masauto-manage.labels" -}}
+helm.sh/chart: {{ include "masauto-manage.chart" . }}
+{{ include "masauto-manage.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "ibm-masapp-manage-operator.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "ibm-masapp-manage-operator.name" . }}
+{{- define "masauto-manage.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "masauto-manage.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "ibm-masapp-manage-operator.serviceAccountName" -}}
+{{- define "masauto-manage.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "ibm-masapp-manage-operator.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "masauto-manage.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

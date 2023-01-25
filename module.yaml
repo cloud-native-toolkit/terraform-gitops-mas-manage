@@ -12,6 +12,15 @@ versions:
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
             version: '>= 1.1.0'
+      - id: mas_core
+        refs:
+          - source: github.com/cloud-native-toolkit/terraform-gitops-mas-core.git
+            version: '>= 1.0.0'
+      - id: storage_manager
+        optional: true
+        refs:
+          - source: github.com/cloud-native-toolkit/terraform-util-storage-class-manager.git
+            version: '>= 1.0.0'
     variables:
       - name: gitops_config
         moduleRef:
@@ -29,3 +38,27 @@ versions:
         moduleRef:
           id: gitops
           output: sealed_secrets_cert
+      - name: core_namespace
+        moduleRef:
+          id: mas_core
+          output: core_namespace
+      - name: ibm_entitlement_secret
+        moduleRef:
+          id: mas_core
+          output: ibm_entitlement_secret
+      - name: mas_instance_id
+        moduleRef:
+          id: mas_core
+          output: mas_instance_id
+      - name: mas_workspace_id
+        moduleRef:
+          id: mas_core
+          output: mas_workspace_id
+      - name: db2_meta_storage_class
+        moduleRef:
+          id: storage_manager
+          output: rwx_storage_class
+      - name: db2_data_storage_class
+        moduleRef:
+          id: storage_manager
+          output: block_storage_class

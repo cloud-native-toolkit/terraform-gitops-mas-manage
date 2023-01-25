@@ -75,110 +75,62 @@ variable "server_name" {
   default     = "default"
 }
 
-variable "channel" {
+variable "core_namespace" {
   type        = string
-  description = "Subscription channel"
-  default     = "8.x"
+  description = "The namespace where MAS Core has been installed"
 }
 
-variable "installPlan" {
+variable "ibm_entitlement_secret" {
   type        = string
-  description = "Install Plan for App"
-  default     = "Automatic"
+  description = "The name of the secret where the entitlement key has been stored"
 }
 
-variable "catalog" {
+variable "mas_instance_id" {
   type        = string
-  description = "App catalog source"
-  default     = "ibm-operator-catalog"
+  description = "The id of the MAS instance created when core was installed"
 }
 
-variable "catalog_namespace" {
+variable "mas_workspace_id" {
   type        = string
-  description = "Catalog source namespace"
-  default     = "openshift-marketplace"
+  description = "The id of the MAS workspace created when core was installed"
 }
 
-variable "instanceid" {
+variable "db2_meta_storage_class" {
   type        = string
-  description = "instance name for MAS - for example: masdemo or mas8 "
+  description = "The storage class used for DB2 metadata. Must be RWX storage."
 }
 
-variable "entitlement_key" {
+variable "db2_data_storage_class" {
   type        = string
-  description = "IBM entitlement key for MAS"
-}
-
-variable "appid" {
-  type        = string
-  description = "MAS AppID to deploy.  Expects: manage"
-  default     = "manage"
-}
-
-variable "workspace_id" {
-  type = string
-  description = "MAS workspace id"
-}
-
-variable "db_user" {
-  type = string
-  sensitive = true
-  description = "database connection username"
-
-}
-
-variable "db_password" {
-  type = string
-  sensitive = true
-  description = "database connection password"
-}
-
-variable "db_cert" {
-  type = string
-  sensitive = true
-  description = "database connection public cert"
-}
-
-variable "db_url" {
-  type = string
-  sensitive = true
-  description = "database connection url"
-} 
-
-variable "db_schema" {
-  type = string
-  description = "database schema name"
-  default = "maximo"
+  description = "The storage class used for DB2 data. Can be RWO."
 }
 
 variable "demodata" {
-  type = bool
-  description = "depoloy demo data for app"
-  default = false
+  type        = bool
+  description = "Flag indicating demo data should be provisioned in the database"
+  default     = false
 }
 
-variable "reuse_db" {
-  type = bool
-  description = "true if you are re-using a previously configured db with manage - must provide db encryption keys if true"
-  default = false
+variable "db2_instance_name" {
+  type        = string
+  description = "The name of the db2 instance that will be provisioned"
+  default     = "db2w-manage"
 }
 
-variable "crypto_key" {
-  type = string
-  description = "required if reuse_db is true"
-  default = ""
-  sensitive = true
+variable "mas_app_channel" {
+  type        = string
+  description = "The operator change from which manage will be installed"
+  default     = "8.4.x"
 }
 
-variable "cryptox_key" {
-  type = string
-  description = "required if reuse_db is true"
-  default = ""
-  sensitive = true
+variable "mas_config_scope" {
+  type        = string
+  description = "The config scope for the MAS database"
+  default     = "wsapp"
 }
 
-variable "addons" { 
-  description = "comma separated list of quoted Manage app addons to deploy along with Manage. Current valid addons: health, civil"
-  type        = list(string)
-  default     = []
+variable "db2_dbname" {
+  type        = string
+  description = "The name of the db2 instance that will be provisioned"
+  default     = "MANAGE"
 }

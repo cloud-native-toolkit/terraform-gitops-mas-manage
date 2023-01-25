@@ -59,7 +59,7 @@ variable "git_org" {
 }
 
 variable "git_repo" {
-  default = "git-module-mas-app"
+  default = "git-module-test"
 }
 
 variable "gitops_namespace" {
@@ -70,32 +70,19 @@ variable "git_username" {
 }
 
 variable "kubeseal_namespace" {
-  default = "sealed-secrets"
+  default = "sealed-secret"
 }
 
 variable "cp_entitlement_key" {
 }
 
-variable "database_username" {
-  type = string
+variable "ibmcloud_api_key" {
+  type        = string
+  description = "The api key for IBM Cloud access"
 }
 
-variable "database_password" {
+variable "osdSize" {
+  description = "Size of your storage devices. The total storage capacity of your ODF cluster is equivalent to the osdSize x 3 divided by the numOfOsd."
   type = string
-}
-
-variable "database_url" {
-  type = string
-}
-
-variable "database_cert" {
-  type = string
-}
-
-variable "database_crypto_key" {
-  type = string
-}
-
-variable "database_cryptox_key" {
-  type = string
+  default = "250Gi"
 }
