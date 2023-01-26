@@ -1,4 +1,4 @@
-module "gitops_module" {
+module "odf" {
   source = "github.com/cloud-native-toolkit/terraform-gitops-ibm-odf"
 
   gitops_config = module.gitops.gitops_config
