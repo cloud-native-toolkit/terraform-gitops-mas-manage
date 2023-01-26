@@ -47,3 +47,8 @@ output "mas_instance_id" {
   depends_on  = [gitops_module.mas_manage]
 }
 
+output "mas_app_id" {
+  description = "The name of the app (manage)"
+  value       = "manage"
+  depends_on  = [gitops_module.mas_manage]
+}

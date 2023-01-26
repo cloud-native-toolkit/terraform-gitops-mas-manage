@@ -29,9 +29,9 @@ SERVER_NAME=$(jq -r '.server_name // "default"' gitops-output.json)
 LAYER=$(jq -r '.layer_dir // "2-services"' gitops-output.json)
 TYPE=$(jq -r '.type // "base"' gitops-output.json)
 
-APPNAME=$(jq -r '.appname // "manage"' gitops-output.json)
-WSNAME=$(jq -r '.ws_name // "demo"' gitops-output.json)
-INSTNAME=$(jq -r '.inst_name // "masdemo"' gitops-output.json)
+APPNAME=$(jq -r '.app_id // "manage"' gitops-output.json)
+WSNAME=$(jq -r '.workspace_id // "demo"' gitops-output.json)
+INSTNAME=$(jq -r '.instance_id // "masdemo"' gitops-output.json)
 
 
 mkdir -p .testrepo
