@@ -22,7 +22,7 @@ if ! command -v kubectl 1> /dev/null 2> /dev/null; then
 fi
 
 export KUBECONFIG=$(cat .kubeconfig)
-NAMESPACE=$(cat .namespace)
+NAMESPACE=$(jq -r '.namespace // "my-namespace"' gitops-output.json)
 COMPONENT_NAME=$(jq -r '.name // "my-module"' gitops-output.json)
 BRANCH=$(jq -r '.branch // "main"' gitops-output.json)
 SERVER_NAME=$(jq -r '.server_name // "default"' gitops-output.json)
