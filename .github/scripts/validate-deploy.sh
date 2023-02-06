@@ -22,16 +22,16 @@ if ! command -v kubectl 1> /dev/null 2> /dev/null; then
 fi
 
 export KUBECONFIG=$(cat .kubeconfig)
-NAMESPACE=$(cat .namespace)
+NAMESPACE=$(jq -r '.namespace // "my-namespace"' gitops-output.json)
 COMPONENT_NAME=$(jq -r '.name // "my-module"' gitops-output.json)
 BRANCH=$(jq -r '.branch // "main"' gitops-output.json)
 SERVER_NAME=$(jq -r '.server_name // "default"' gitops-output.json)
 LAYER=$(jq -r '.layer_dir // "2-services"' gitops-output.json)
 TYPE=$(jq -r '.type // "base"' gitops-output.json)
 
-APPNAME=$(jq -r '.appname // "manage"' gitops-output.json)
-WSNAME=$(jq -r '.ws_name // "demo"' gitops-output.json)
-INSTNAME=$(jq -r '.inst_name // "masdemo"' gitops-output.json)
+APPNAME=$(jq -r '.app_id // "manage"' gitops-output.json)
+WSNAME=$(jq -r '.workspace_id // "demo"' gitops-output.json)
+INSTNAME=$(jq -r '.instance_id // "masdemo"' gitops-output.json)
 
 
 mkdir -p .testrepo
@@ -43,34 +43,51 @@ cd .testrepo || exit 1
 find . -name "*"
 
 
+validate_gitops_content "${NAMESPACE}" "${LAYER}" "${SERVER_NAME}" "operators" "masauto-operator" "Chart.yaml"
+validate_gitops_content "${NAMESPACE}" "${LAYER}" "${SERVER_NAME}" "operators" "masauto-operator" "values.yaml"
+
+validate_gitops_content "${NAMESPACE}" "${LAYER}" "${SERVER_NAME}" "${TYPE}" "${COMPONENT_NAME}" "Chart.yaml"
 validate_gitops_content "${NAMESPACE}" "${LAYER}" "${SERVER_NAME}" "${TYPE}" "${COMPONENT_NAME}" "values.yaml"
+
 check_k8s_namespace "${NAMESPACE}"
 
-## testing for operator separtely here because it only needs 30min timer, the other deployments need much longer
+check_k8s_resource "${NAMESPACE}" subscription masauto-operator || exit 1
+check_k8s_resource "${NAMESPACE}" deployment masauto-operator-controller-manager || exit 1
+
+check_k8s_resource "${NAMESPACE}" secret ibm-entitlement-key || exit 1
+
+check_k8s_resource ibm-common-services deployment cert-manager-controller || exit 1
+
+check_k8s_resource ibm-sls deployment sls-api-licensing || exit 1
+
+check_k8s_resource ibm-common-services deployment user-data-services-operator || exit 1
+check_k8s_resource ibm-common-services analyticsproxy analyticsproxy || exit 1
+
+check_k8s_resource ibm-common-services deployment kafka-entity-operator || exit 1
+
+check_k8s_resource ibm-common-services deployments event-api-deployment || exit 1
+
+check_k8s_namespace mas-inst1-core || exit 1
+check_k8s_resource mas-inst1-core suite inst1 || exit 1
+
 count=0
-until kubectl get deployment ibm-mas-manage-operator -n ${NAMESPACE} || [[ $count -eq 30 ]]; do
-  echo "Waiting for deployment/ibm-mas-manage-operator in ${NAMESPACE}"
+while [[ count -lt 40 ]]; do
+  RESULT=$(kubectl get -n mas-inst1-core suite inst1 -o json)
+
+  CONDITION=$(echo "${RESULT}" | jq -c '.status.conditions[] | select(.type == "SLSIntegrationReady")')
+
+  SLS_INTEGRATION_REASON=$(echo "${CONDITION}" | jq -r '.reason')
+  echo "SLS Integration reason: ${SLS_INTEGRATION_REASON}"
+  if [[ "${SLS_INTEGRATION_REASON}" == "MissingLicenseFile" ]]; then
+    break
+  fi
+
+  echo "**** Suite result ****"
+  echo "${RESULT}"
+
   count=$((count + 1))
-  sleep 60
+  sleep 90
 done
-
-if [[ $count -eq 30 ]]; then
-  echo "Timed out waiting for deployment/ibm-mas-manage-operator in ${NAMESPACE}"
-  kubectl get all -n "${NAMESPACE}"
-  exit 1
-fi
-
-## workspace rollout 
-check_k8s_resource "${NAMESPACE}" deployment "${INSTNAME}-entitymgr-ws"
-
-## maxinst deployment must succeed or nothing will work - this can take up to 4.5hrs if demo data is deployed too
-check_k8s_resource "${NAMESPACE}" deployment "${WSNAME}-manage-maxinst"
-
-## last test for all deploy
-check_k8s_resource "${NAMESPACE}" deployment "${WSNAME}-all"
-
-
-kubectl get deployments -n ${NAMESPACE}
 
 cd ..
 rm -rf .testrepo

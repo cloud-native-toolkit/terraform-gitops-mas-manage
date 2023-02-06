@@ -31,13 +31,13 @@ check_k8s_namespace () {
   local NS="$1"
 
   count=0
-  until kubectl get namespace "${NS}" 1> /dev/null 2> /dev/null || [[ $count -eq 20 ]]; do
+  until kubectl get namespace "${NS}" 1> /dev/null 2> /dev/null || [[ $count -eq 40 ]]; do
     echo "Waiting for namespace: ${NS}"
     count=$((count + 1))
-    sleep 15
+    sleep 60
   done
 
-  if [[ $count -eq 20 ]]; then
+  if [[ $count -eq 40 ]]; then
     echo "Timed out waiting for namespace: ${NS}" >&2
     exit 1
   else
@@ -54,13 +54,14 @@ check_k8s_resource () {
   echo "Checking for resource: ${NS}/${GITOPS_TYPE}/${NAME}"
 
   count=0
-  until kubectl get "${GITOPS_TYPE}" "${NAME}" -n "${NS}" 1> /dev/null 2> /dev/null || [[ $count -gt 200 ]]; do
+  local limit=40
+  until kubectl get "${GITOPS_TYPE}" "${NAME}" -n "${NS}" 1> /dev/null 2> /dev/null || [[ $count -gt $limit ]]; do
     echo "Waiting for ${GITOPS_TYPE}/${NAME} in ${NS}"
     count=$((count + 1))
     sleep 60
   done
 
-  if [[ $count -gt 200 ]]; then
+  if [[ $count -gt $limit ]]; then
     echo "Timed out waiting for ${GITOPS_TYPE}/${NAME}" >&2
     kubectl get "${GITOPS_TYPE}" -n "${NS}"
     exit 1

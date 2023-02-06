@@ -6,6 +6,7 @@ Deploys MAS Manage applications as part of Maximo Application Suite via gitops. 
 Note if your cluster is not setup for gitops, download the gitops bootstrap BOM from the module catalog first to setup the gitops tooling.
 
 ## Supported Manage Industry Add-on solutions
+
 This module currently supports installing the following add-ons with MAS Manage:
 - Health
 - Civil Infrastructure
