@@ -16,7 +16,7 @@ spec:
   mas_workspace_id: {{ required "mas_workspace_id value is required" .Values.mas_workspace_id }}
   db2_instance_name: {{ .Values.db2_instance_name | default "db2w-manage" }}
   mas_app_id: manage
-  mas_app_channel: {{ .Values.mas_app_channel | default "8.4.x" }}
+  mas_app_channel: {{ .Values.mas_app_channel | default "8.5.x" }}
   db2_dbname: {{ .Values.db2_dbname | default "MANAGE" }}
   mas_config_scope: {{ .Values.mas_config_scope | default "wsapp" }}  # recommend keeping db for manage at workspace-application scope by default
   mas_appws_jdbc_binding: {{ .Values.mas_appws_jdbc_binding | default "workspace-application" }}
@@ -28,3 +28,8 @@ spec:
       version: latest
     health:
       version: latest
+  db2_memory_requests: "3Gi"
+  db2_database_db_config: {
+    LOGARCHMETH1: "OFF"
+  }
+

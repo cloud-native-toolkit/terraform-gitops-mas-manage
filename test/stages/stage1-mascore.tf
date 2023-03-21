@@ -13,4 +13,6 @@ module "mas_core" {
   uds_contact_last_name = "User"
   mongodb_storage_class = module.storage_manager.block_storage_class
   uds_storage_class = module.storage_manager.block_storage_class
+  host_id = var.host_id
+  license_key = var.license_key
 }

@@ -86,3 +86,9 @@ variable "osdSize" {
   type = string
   default = "250Gi"
 }
+
+variable "host_id" {
+}
+
+variable "license_key" {
+}
