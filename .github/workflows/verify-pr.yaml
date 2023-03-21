@@ -12,7 +12,7 @@ jobs:
     if: ${{ !contains( github.event.pull_request.labels.*.name, 'skip ci' ) }}
     uses: ./.github/workflows/verify-workflow.yaml
     with:
-      testcase: ocp4_latest_gitops
+      testcase: ocp4_latest_gitops_maximo
     secrets:
       AWS_CLUSTER_USERNAME: ${{ secrets.AWS_CLUSTER_USERNAME }}
       AWS_CLUSTER_PASSWORD: ${{ secrets.AWS_CLUSTER_PASSWORD }}
