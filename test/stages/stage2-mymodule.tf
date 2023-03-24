@@ -16,7 +16,7 @@ module "gitops_module" {
   kubeseal_cert = module.gitops.sealed_secrets_cert
   server_name = module.gitops.server_name
 
-  core_namespace = module.wait_for_mas_core.core_instance_namespace
+  core_namespace = module.wait_for_mas_core.core_namespace
   ibm_entitlement_secret = module.wait_for_mas_core.entitlement_secret_name
   mas_instance_id = module.wait_for_mas_core.mas_instance_id
   mas_workspace_id = module.wait_for_mas_core.mas_workspace_id
