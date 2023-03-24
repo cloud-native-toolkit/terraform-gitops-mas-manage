@@ -16,6 +16,8 @@ versions:
         refs:
           - source: github.com/cloud-native-toolkit/terraform-gitops-mas-core.git
             version: '>= 1.2.0'
+          - source: github.com/cloud-native-toolkit/terraform-util-mas-core-ready.git
+            version: '>= 1.0.0'
             default: true
           - source: github.com/cloud-native-toolkit/terraform-util-mas-core-existing.git
             version: '>= 1.0.0'
