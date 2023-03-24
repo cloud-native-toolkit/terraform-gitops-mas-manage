@@ -17,6 +17,186 @@ versions:
       - id: mas_core
         refs:
           - source: github.com/cloud-native-toolkit/terraform-gitops-mas-core.git
+            version: '>= 1.2.0'
+            default: true
+          - source: >-
+              github.com/cloud-native-toolkit/terraform-util-mas-core-existing.git
+            version: '>= 1.0.0'
+      - id: storage_manager
+        optional: true
+        refs:
+          - source: >-
+              github.com/cloud-native-toolkit/terraform-util-storage-class-manager.git
+            version: '>= 1.0.0'
+    variables:
+      - name: gitops_config
+        type: |-
+          object({
+              boostrap = object({
+                argocd-config = object({
+                  project = string
+                  repo = string
+                  url = string
+                  path = string
+                })
+              })
+              infrastructure = object({
+                argocd-config = object({
+                  project = string
+                  repo = string
+                  url = string
+                  path = string
+                })
+                payload = object({
+                  repo = string
+                  url = string
+                  path = string
+                })
+              })
+              services = object({
+                argocd-config = object({
+                  project = string
+                  repo = string
+                  url = string
+                  path = string
+                })
+                payload = object({
+                  repo = string
+                  url = string
+                  path = string
+                })
+              })
+              applications = object({
+                argocd-config = object({
+                  project = string
+                  repo = string
+                  url = string
+                  path = string
+                })
+                payload = object({
+                  repo = string
+                  url = string
+                  path = string
+                })
+              })
+            })
+        description: Config information regarding the gitops repo structure
+        moduleRef:
+          id: gitops
+          output: gitops_config
+      - name: git_credentials
+        type: |-
+          list(object({
+              repo = string
+              url = string
+              username = string
+              token = string
+            }))
+        description: The credentials for the gitops repo(s)
+        sensitive: true
+        moduleRef:
+          id: gitops
+          output: git_credentials
+      - name: kubeseal_cert
+        type: string
+        description: The certificate/public key used to encrypt the sealed secrets
+        default: ''
+        moduleRef:
+          id: gitops
+          output: sealed_secrets_cert
+      - name: server_name
+        type: string
+        description: The name of the server
+        default: default
+        moduleRef:
+          id: gitops
+          output: server_name
+      - name: core_namespace
+        type: string
+        description: The namespace where MAS Core has been installed
+        moduleRef:
+          id: mas_core
+          output: core_namespace
+      - name: ibm_entitlement_secret
+        type: string
+        description: The name of the secret where the entitlement key has been stored
+        moduleRef:
+          id: mas_core
+          output: entitlement_secret_name
+      - name: mas_instance_id
+        type: string
+        description: The id of the MAS instance created when core was installed
+        moduleRef:
+          id: mas_core
+          output: mas_instance_id
+      - name: mas_workspace_id
+        type: string
+        description: The id of the MAS workspace created when core was installed
+        moduleRef:
+          id: mas_core
+          output: mas_workspace_id
+      - name: db2_meta_storage_class
+        type: string
+        description: The storage class used for DB2 metadata. Must be RWX storage.
+        moduleRef:
+          id: storage_manager
+          output: rwx_storage_class
+      - name: db2_data_storage_class
+        type: string
+        description: The storage class used for DB2 data. Can be RWO.
+        moduleRef:
+          id: storage_manager
+          output: block_storage_class
+      - name: demodata
+        type: bool
+        description: Flag indicating demo data should be provisioned in the database
+        default: false
+      - name: db2_instance_name
+        type: string
+        description: The name of the db2 instance that will be provisioned
+        default: db2w-manage
+      - name: mas_app_channel
+        type: string
+        description: The operator change from which manage will be installed
+        default: 8.4.x
+      - name: mas_config_scope
+        type: string
+        description: The config scope for the MAS database
+        default: wsapp
+      - name: db2_dbname
+        type: string
+        description: The name of the db2 instance that will be provisioned
+        default: MANAGE
+    version: v2.1.0
+    outputs:
+      - name: name
+        description: The name of the module
+      - name: branch
+        description: The branch where the module config has been placed
+      - name: namespace
+        description: The namespace where the module will be deployed
+      - name: server_name
+        description: The server where the module will be deployed
+      - name: layer
+        description: The layer where the module is deployed
+      - name: type
+        description: The type of module where the module is deployed
+      - name: mas_workspace_id
+        description: The id of the mas app workspace deployed
+      - name: mas_instance_id
+        description: The id of the mas instance deployed
+      - name: mas_app_id
+        description: The name of the app (manage)
+  - platforms:
+      - ocp4
+    dependencies:
+      - id: gitops
+        refs:
+          - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
+            version: '>= 1.1.0'
+      - id: mas_core
+        refs:
+          - source: github.com/cloud-native-toolkit/terraform-gitops-mas-core.git
             version: '>= 1.0.0'
       - id: storage_manager
         optional: true
