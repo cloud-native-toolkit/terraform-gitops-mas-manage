@@ -10,14 +10,16 @@ on:
 jobs:
   verify:
     if: ${{ !contains( github.event.pull_request.labels.*.name, 'skip ci' ) }}
-    uses: cloud-native-toolkit/action-workflows/.github/workflows/verify-gitops-module.yaml@v1
+    uses: ./.github/workflows/verify-workflow.yaml
     with:
-      testcase: ocp4_latest_gitops
+      testcase: ocp4_latest_gitops_maximo
     secrets:
       AWS_CLUSTER_USERNAME: ${{ secrets.AWS_CLUSTER_USERNAME }}
       AWS_CLUSTER_PASSWORD: ${{ secrets.AWS_CLUSTER_PASSWORD }}
       IBMCLOUD_API_KEY: ${{ secrets.IBMCLOUD_API_KEY }}
       CP_ENTITLEMENT_KEY: ${{ secrets.CP_ENTITLEMENT_KEY }}
+      HOST_ID: ${{ secrets.MAS_HOST_ID }}
+      LICENSE_KEY: ${{ secrets.MAS_LICENSE_KEY }}
 
   verifyMetadata:
     uses: cloud-native-toolkit/action-workflows/.github/workflows/verify-module-metadata.yaml@v1
